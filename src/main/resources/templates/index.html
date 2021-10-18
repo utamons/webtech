@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Sample web app</title>
+    <link href="/css/my.css" rel="stylesheet" media="screen"/>
+</head>
+<body>
+
+<div id="subtitle">
+    <p>Hello, <span th:text="${name}"></span>!</p>
+</div>
+
+</body>
+</html>
