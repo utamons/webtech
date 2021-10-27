@@ -22,7 +22,7 @@ public class MenuController {
 	}
 
 	@PostMapping("/selectMenuItem")
-	public String postIndex(@RequestParam(value = "menuItem") String menuItem, Model model) {
+	public String postIndex(@RequestParam(value = "menuItem") String menuItem) {
 		switch (menuItem) {
 			case "1":
 				return "redirect:/page1";
