@@ -1,25 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}"
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Sample web app</title>
+    <title>Home page</title>
     <link href="/css/my.css" rel="stylesheet" media="screen"/>
 </head>
 <body>
 
-<div id="subtitle">
-    <p>Hello, <span th:text="${name}"></span>!</p>
-    <p>The date: <div th:text="${dt}"></div> </p>
+<div id="menu">
+    <p>Page 1 - (1)</p>
+    <p>Page 2 - (2)</p>
 </div>
 
-<table>
-    <tr th:each="row : ${x}">
-        <td th:text="${row[0]}"></td>
-        <td th:text="${row[1]}"></td>
-        <td th:text="${row[2]}"></td>
-    </tr>
-</table>
+<form th:action="@{/selectMenuItem}" method="post">
+    <label for="menuItem">Select menu item</label>
+    <input id="menuItem" type="text" name="menuItem"/>
+    <input id="submitButton" type="submit" value="Submit"/>
+</form>
 
 </body>
 </html>
