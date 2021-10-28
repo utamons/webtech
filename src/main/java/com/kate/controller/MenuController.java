@@ -28,6 +28,8 @@ public class MenuController {
 				return "redirect:/page1";
 			case "2":
 				return "redirect:/page2";
+			case "3":
+				return "redirect:/page3";
 			default:
 				return "index";
 		}

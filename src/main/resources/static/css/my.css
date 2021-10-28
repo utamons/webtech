@@ -7,3 +7,15 @@ p {
 .red {
     color: red;
 }
+.green {
+    color: green;
+}
+table, th, td {
+
+ border: 1px solid black;
+    color: black;
+    top: 50%;
+    left: 50%;
+    border: 1px solid black;
+    border-collapse: collapse;
+}

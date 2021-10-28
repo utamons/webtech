@@ -20,6 +20,8 @@ public class Page1Controller {
                 x[i][j].setValue(rnd.nextInt(10));
                 if (x[i][j].getValue()%2 == 0) {
                     x[i][j].setStyle("color:red");
+                }else {
+                    x[i][j].setStyle("color:green");
                 }
             }
         }
