@@ -14,6 +14,13 @@
             <td th:attr="style=${col.style}" th:each="col : ${row}" th:text="${col.value}"></td>
         </tr>
     </table>
+    <form th:action="@{/setNumber}" method="post">
+        <input id="num" type="text" name="num" size="10" align="middle"/>
+        <input id="submitButton" type="submit" value="Submit"/>
+    </form>
+    <form th:action="@{/move}" method="post">
+        <button>Next</button>
+    </form>
     <a href="/">Home</a>
 </div>
 
