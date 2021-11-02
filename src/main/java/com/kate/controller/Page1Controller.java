@@ -94,19 +94,29 @@ public class Page1Controller {
             sum = arr[rightX - 1][0].getValue() + arr[rightX - 1][1].getValue() + arr[rightX][1].getValue();
         }
         // Down left corner
-        // ... to be done
+        else if(x == 0 && y == arr.length){
+            sum = arr[arr.length-2][0].getValue() + arr[arr.length-2][1].getValue() + arr[arr.length-1][1].getValue();
+        }
         // Down right corner
-        // ... to be done
+        else if (x == rightX && y == arr.length) {
+            sum = arr[rightX - 1][arr.length-1].getValue() + arr[rightX - 1][arr.length-2].getValue() + arr[rightX][arr.length-2].getValue();
+        }
         // Upper border cell
         else if (x > 0 && y == 0 && x < rightX) {
             sum = arr[x - 1][0].getValue() + arr[x - 1][1].getValue() + arr[x][1].getValue() + arr[x + 1][0].getValue() + arr[x + 1][1].getValue();
         }
         // Down border cell
-        // ... to be done
+        else if (x > 0 && y == arr.length - 1 && x < rightX) {
+            sum = arr[x - 1][y].getValue() + arr[x - 1][y-1].getValue() + arr[x][y-1].getValue() + arr[x + 1][y].getValue() + arr[x + 1][y-1].getValue();
+        }
         // Left border cell
-        // ... to be done
+        else if (y > 0 && x == 0 && y < rightX) {
+            sum = arr[y - 1][0].getValue() + arr[y - 1][1].getValue() + arr[y][1].getValue() + arr[y + 1][0].getValue() + arr[y + 1][1].getValue();
+        }
         // Right border cell
-        // ... to be done
+        else if (y > 0 && x == arr.length - 1 && y < rightX) {
+            sum = arr[y - 1][x].getValue() + arr[y - 1][x-1].getValue() + arr[y][x-1].getValue() + arr[y + 1][x].getValue() + arr[y + 1][x-1].getValue();
+        }
         // Middle cell
         else if (x > 0 && y > 0 && x < rightX && y < downY) {
             sum = arr[x - 1][y - 1].getValue() + arr[x][y - 1].getValue() + arr[x + 1][y - 1].getValue() +
@@ -122,8 +132,12 @@ public class Page1Controller {
             return 1;
         else if (sum == 2)
             return cellValue;
-        else
+        else if(sum==4){
             return 0;
+        }else{
+            return 0;
+        }
+
     }
 }
 
