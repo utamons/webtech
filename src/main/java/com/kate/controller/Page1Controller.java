@@ -1,27 +1,24 @@
 package com.kate.controller;
 
 import com.kate.model.ArrayCell;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Random;
-
 @Controller
 public class Page1Controller {
 
-    private ArrayCell[][] x;
+    private ArrayCell[][] arr;
     ArrayCell[][] nums = new ArrayCell[10][10];
+
     public Page1Controller() {
-        x = new ArrayCell[10][10];
-        for (int i = 0; i < x.length; ++i) {
-            for (int j = 0; j < x[0].length; ++j) {
-                x[i][j] = new ArrayCell();
-                x[i][j].setValue(0);
+        arr = new ArrayCell[10][10];
+        for (int i = 0; i < arr.length; ++i) {
+            for (int j = 0; j < arr[0].length; ++j) {
+                arr[i][j] = new ArrayCell();
+                arr[i][j].setValue(0);
             }
         }
     }
@@ -29,20 +26,20 @@ public class Page1Controller {
     @GetMapping("/page1")
     public String getPage1(Model model) {
 
-        for (int i = 0; i < x.length; ++i) {
-            for (int j = 0; j < x[0].length; ++j) {
-                if (x[i][j].getValue() == 0) {
-                    x[i][j].setStyle("background-color:white; color:white");
+        for (int i = 0; i < arr.length; ++i) {
+            for (int j = 0; j < arr[0].length; ++j) {
+                if (arr[i][j].getValue() == 0) {
+                    arr[i][j].setStyle("background-color:white; color:white");
 
                 } else {
-                    x[i][j].setStyle("background-color:green; color:green");
+                    arr[i][j].setStyle("background-color:green; color:green");
 
                 }
-                System.out.print(x[i][j].getValue()+" ");
+                System.out.print(arr[i][j].getValue() + " ");
             }
             System.out.println();
         }
-        model.addAttribute("x", x);
+        model.addAttribute("x", arr);
 
         return "page1";
     }
@@ -52,9 +49,9 @@ public class Page1Controller {
         String[] numbers = num.split(",");
         String num1 = numbers[0];
         String num2 = numbers[1];
-        int n = Integer.parseInt(num1);
+        int x = Integer.parseInt(num1);
         int y = Integer.parseInt(num2);
-        x[n][y].setValue(1);
+        arr[x][y].setValue(1);
 
         return "redirect:/page1";
     }
@@ -69,216 +66,66 @@ public class Page1Controller {
             }
         }
 
-        for (int i = 0; i < x.length; ++i) {
-            for (int j = 0; j < x[0].length; ++j) {
-                x[i][j]=nums[i][j];
+        /*
+           Идём по всем элементам массива
+           Считаем decide(sumCell(i,j),arr[i][j].getValue);
+           Записываем результат в nums[i][j]
+         */
+
+        for (int i = 0; i < arr.length; ++i) {
+            for (int j = 0; j < arr[0].length; ++j) {
+                arr[i][j] = nums[i][j];
             }
         }
 
         return "redirect:/page1";
     }
 
-    /*public String isAlive(){
-        for (int i = 0; i < x.length; ++i) {
-        for (int j = 0; j < x[0].length; ++j) {
-
-
-
-
-            if (x[i][j].getValue() == 1 && x[i+1][j].getValue() == 1 && x[i-1][j].getValue() == 1){
-                x[i][j].setValue(1);
-            }else if(x[i][j].getValue() == 1 && x[i][j+1].getValue() == 1 && x[i][j-1].getValue() == 1){
-                x[i][j].setValue(1);
-            }else if(x[i][j].getValue() == 1 && x[i+1][j+1].getValue() == 1 && x[i-1][j-1].getValue() == 1){
-                x[i][j].setValue(1);
-            }else if(x[i][j].getValue() == 1 && x[i-1][j+1].getValue() == 1 && x[i+1][j-1].getValue() == 1){
-                x[i][j].setValue(1);
-            }
-
+    public int sumCell(int x, int y) {
+        int sum = 0;
+        int rightX = arr.length - 1;
+        int downY = arr[0].length - 1;
+        // Upper left corner
+        if (x == 0 && y == 0) {
+            sum = arr[1][0].getValue() + arr[1][1].getValue() + arr[0][1].getValue();
         }
-    }
-        return "redirect:/page1";
-    }
-    public String isDead(){
-        for (int i = 0; i < x.length; ++i) {
-            for (int j = 0; j < x[0].length; ++j) {
-                if (x[i][j].getValue() == 1 && x[i+1][j].getValue() == 0 && x[i-1][j].getValue() == 0){
-                    x[i][j].setValue(0);
-                }else if(x[i][j].getValue() == 1 && x[i][j+1].getValue() == 0 && x[i][j-1].getValue() == 0){
-                    x[i][j].setValue(0);
-                }else if(x[i][j].getValue() == 1 && x[i+1][j+1].getValue() == 0 && x[i-1][j-1].getValue() == 0){
-                    x[i][j].setValue(0);
-                }else if(x[i][j].getValue() == 1 && x[i-1][j+1].getValue() == 0 && x[i+1][j-1].getValue() == 0){
-                    x[i][j].setValue(0);
-                }
-
-            }
+        // Upper right corner
+        else if (x == arr.length - 1 && y == 0) {
+            sum = arr[rightX - 1][0].getValue() + arr[rightX - 1][1].getValue() + arr[rightX][1].getValue();
         }
-        return "redirect:/page1";
-    }
-    public String isBorn(){
-        for (int i = 0; i < x.length; ++i) {
-            for (int j = 0; j < x[0].length; ++j) {
-                if (x[i][j].getValue() == 0 && x[i-1][j].getValue() == 1 && x[i-1][j+1].getValue() == 1 &&x[i+1][j-1].getValue() == 1  ){
-                    x[i][j].setValue(1);
-                }else if(x[i][j].getValue() == 0 && x[i-1][j-1].getValue() == 1 && x[i-1][j].getValue() == 1 &&x[i][j-1].getValue() == 1){
-                    x[i][j].setValue(1);
-                }else if(x[i][j].getValue() == 0 && x[i-1][j-1].getValue() == 1 && x[i-1][j].getValue() == 1 &&x[i-1][j+1].getValue() == 1 ){
-                    x[i][j].setValue(1);
-                }
-                else if(x[i][j].getValue() == 0 && x[i-1][j-1].getValue() == 1 && x[i][j-1].getValue() == 1 &&x[i+1][j].getValue() == 1 ){
-                    x[i][j].setValue(1);
-                }
-                else if(x[i][j].getValue() == 0 && x[i][j-1].getValue() == 1 && x[i+1][j-1].getValue() == 1 &&x[i+1][j].getValue() == 1 ){
-                    x[i][j].setValue(1);
-                }
-                else if(x[i][j].getValue() == 0 && x[i+1][j].getValue() == 1 && x[i+1][j+1].getValue() == 1 && x[i][j+1].getValue() == 1 ){
-                    x[i][j].setValue(1);
-                }
-                else if(x[i][j].getValue() == 0 && x[i+1][j+1].getValue() == 1 && x[i-1][j+1].getValue() == 1 &&x[i][j+1].getValue() == 1 ){
-                    x[i][j].setValue(1);
-                }
-                else if(x[i][j].getValue() == 0 && x[i+1][j+1].getValue() == 1 && x[i][j+1].getValue() == 1 &&x[i+1][j-1].getValue() == 1 ){
-                    x[i][j].setValue(1);
-                }
-            }
+        // Down left corner
+        // ... to be done
+        // Down right corner
+        // ... to be done
+        // Upper border cell
+        else if (x > 0 && y == 0 && x < rightX) {
+            sum = arr[x - 1][0].getValue() + arr[x - 1][1].getValue() + arr[x][1].getValue() + arr[x + 1][0].getValue() + arr[x + 1][1].getValue();
         }
-        return "redirect:/page1";
-    }
-    public String isKilled(){
-        for (int i = 0; i < x.length; ++i) {
-            for (int j = 0; j < x[0].length; ++j) {
-                if (x[i][j].getValue() == 1 && x[i-1][j].getValue() == 1 && x[i-1][j+1].getValue() == 1 &&x[i][j+1].getValue() == 1 && x[i+1][j+1].getValue() == 1 ){
-                    x[i][j].setValue(0);
-                }else if(x[i][j].getValue() == 1 && x[i+1][j].getValue() == 1 && x[i+1][j+1].getValue() == 1 &&x[i][j+1].getValue() == 1 && x[i-1][j+1].getValue() == 1){
-                    x[i][j].setValue(0);
-                }else if(x[i][j].getValue() == 1 && x[i+1][j+1].getValue() == 1 && x[i+1][j].getValue() == 1 &&x[i+1][j-1].getValue() == 1 && x[i][j-1].getValue() == 1){
-                    x[i][j].setValue(0);
-                }
-                else if(x[i][j].getValue() == 1 && x[i-1][j-1].getValue() == 1 && x[i-1][j].getValue() == 1 &&x[i-1][j+1].getValue() == 1 && x[i][j+1].getValue() == 1){
-                    x[i][j].setValue(0);
-                }
-                else if(x[i][j].getValue() == 1 && x[i-1][j-1].getValue() == 1 && x[i][j-1].getValue() == 1 &&x[i+1][j-1].getValue() == 1 && x[i+1][j].getValue() == 1){
-                    x[i][j].setValue(0);
-                }
-                else if(x[i][j].getValue() == 1 && x[i][j-1].getValue() == 1 && x[i+1][j+1].getValue() == 1 && x[i][j+1].getValue() == 1 && x[i-1][j+1].getValue() == 1){
-                    x[i][j].setValue(0);
-                }
-                else if(x[i][j].getValue() == 1 && x[i+1][j-1].getValue() == 1 && x[i-1][j-1].getValue() == 1 &&x[i+1][j].getValue() == 1 && x[i][j+1].getValue() == 1){
-                    x[i][j].setValue(0);
-                }
-                else if(x[i][j].getValue() == 1 && x[i][j-1].getValue() == 1 && x[i-1][j-1].getValue() == 1 &&x[i-1][j].getValue() == 1 && x[i+1][j+1].getValue() == 1){
-                    x[i][j].setValue(0);
-                }
-            }
-            }
-        return "redirect:/page1";
-        }*/
-    public int upLeft() {
-        int sum;
-        if(x[0][1].getValue()==1 && x[1][1].getValue()==1 && x[1][0].getValue()==1){
-            sum=3;
-        }else if(x[0][1].getValue()==1 && x[1][1].getValue()==1 || x[1][0].getValue()==1 && x[1][1].getValue()==1 || x[1][1].getValue()==1 && x[0][1].getValue()==1 ){
-            sum=2;
-        }else if(x[0][1].getValue()==1 || x[1][1].getValue()==1 || x[1][0].getValue()==1){
-            sum=1;
-        }else{
-            sum=0;
+        // Down border cell
+        // ... to be done
+        // Left border cell
+        // ... to be done
+        // Right border cell
+        // ... to be done
+        // Middle cell
+        else if (x > 0 && y > 0 && x < rightX && y < downY) {
+            sum = arr[x - 1][y - 1].getValue() + arr[x][y - 1].getValue() + arr[x + 1][y - 1].getValue() +
+                    arr[x - 1][y].getValue() + arr[x + 1][y].getValue() +
+                    arr[x - 1][y + 1].getValue() + arr[x][y + 1].getValue() + arr[x + 1][y + 1].getValue();
         }
         return sum;
     }
-            public int upRight(){
-                int sum;
-                if(x[0][8].getValue()==1 && x[1][8].getValue()==1 && x[1][9].getValue()==1){
-                    sum=3;
-                }else if(x[0][1].getValue()==1 && x[1][8].getValue()==1 || x[1][9].getValue()==1 && x[1][8].getValue()==1 || x[1][8].getValue()==1 && x[0][8].getValue()==1 ){
-                    sum=2;
-                }else if(x[0][1].getValue()==1 || x[1][8].getValue()==1 || x[1][9].getValue()==1){
-                    sum=1;
-                }else{
-                    sum=0;
-                }
-                return sum;
-            }
-            public int DownLeft(){
-                int sum;
-                if(x[9][1].getValue()==1 && x[8][1].getValue()==1 && x[8][0].getValue()==1){
-                    sum=3;
-                }else if(x[9][1].getValue()==1 && x[8][1].getValue()==1 || x[8][0].getValue()==1 && x[8][1].getValue()==1 || x[8][1].getValue()==1 && x[9][1].getValue()==1 ){
-                    sum=2;
-                }else if(x[9][1].getValue()==1 || x[8][1].getValue()==1 || x[8][0].getValue()==1){
-                    sum=1;
-                }else{
-                    sum=0;
-                }
-                return sum;
-            }
-            public int DownRight(){
-                int sum;
-                if(x[9][8].getValue()==1 && x[8][8].getValue()==1 && x[8][9].getValue()==1){
-                    sum=3;
-                }else if(x[9][1].getValue()==1 && x[8][8].getValue()==1 || x[8][9].getValue()==1 && x[8][8].getValue()==1 || x[8][8].getValue()==1 && x[9][8].getValue()==1 ){
-                    sum=2;
-                }else if(x[9][1].getValue()==1 || x[8][8].getValue()==1 || x[8][9].getValue()==1){
-                    sum=1;
-                }else{
-                    sum=0;
-                }
-                return sum;
-            }
 
 
-            public int Up(){
-                int sum;
-                for (int i = 0; i < x.length; ++i) {
-                    for (int j = 0; j < x[0].length; ++j) {
-                        if(x[0][j-1].getValue()==1 && x[0][j+1].getValue()==1 && x[1][j-1].getValue()==1 && x[1][j].getValue()==1 && x[1][j+1].getValue()==1){
-                            sum=5;
-                        }else if(x[0][j-1].getValue()==1 && x[0][j+1].getValue()==1 && x[1][j-1].getValue()==1 && x[1][j].getValue()==1 ||
-                                x[0][j-1].getValue()==1 && x[0][j+1].getValue()==1 && x[1][j-1].getValue()==1 && x[1][j+1].getValue()==1 ||
-                        ){
-                            sum=4;
-                        }else if(){
-                            sum=3;
-                        }
-                        else if(){
-                            sum=2;
-                        }
-                        else if(x[0][j-1].getValue()==1 || x[0][j+1].getValue()==1 || x[1][j-1].getValue()==1 || x[1][j].getValue()==1 || x[1][j+1].getValue()==1){
-                            sum=1;
-                        }else{
-                            sum=0;
-                        }
-                    }
-                }
-                        return sum;
-            }
-            public int Down(){
-                int sum=0;
-                return sum;
-            }
-            public int Left(){
-                int sum=0;
-                return sum;
-            }
-            public int Rigth(){
-                int sum=0;
-                return sum;
-            }
-
-
-            public int Center(){
-                int sum=0;
-                return sum;
-            }
-
-
-            public int Decide(){
-                int sum=0;
-                return sum;
-            }
-
-        }
+    public int decide(int sum, int cellValue) {
+        if (sum == 3)
+            return 1;
+        else if (sum == 2)
+            return cellValue;
+        else
+            return 0;
+    }
+}
 
 
 
