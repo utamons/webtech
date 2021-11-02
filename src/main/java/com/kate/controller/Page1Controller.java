@@ -90,7 +90,7 @@ public class Page1Controller {
             sum = arr[1][0].getValue() + arr[1][1].getValue() + arr[0][1].getValue();
         }
         // Upper right corner
-        else if (x == arr.length - 1 && y == 0) {
+        else if (x == rightX && y == 0) {
             sum = arr[rightX - 1][0].getValue() + arr[rightX - 1][1].getValue() + arr[rightX][1].getValue();
         }
         // Down left corner
