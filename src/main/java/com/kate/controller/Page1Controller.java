@@ -39,7 +39,7 @@ public class Page1Controller {
             }
             System.out.println();
         }
-        model.addAttribute("x", arr);
+        model.addAttribute("x", turnLeft());
 
         return "page1";
     }
@@ -56,13 +56,24 @@ public class Page1Controller {
         return "redirect:/page1";
     }
 
+    @PostMapping("/clear")
+    public String clean(){
+        for (int i = 0; i < arr.length; ++i) {
+            for (int j = 0; j < arr[0].length; ++j) {
+                arr[i][j] = new ArrayCell();
+                arr[i][j].setValue(0);
+            }
+        }
+        return "redirect:/page1";
+    }
+
     @PostMapping("/move")
     public String moveNum() {
 
-        for (int i = 0; i < nums.length; ++i) {
-            for (int j = 0; j < nums[0].length; ++j) {
-                nums[i][j] = new ArrayCell();
-                nums[i][j].setValue(0);
+        for (int x = 0; x < nums.length; ++x) {
+            for (int y = 0; y < nums[0].length; ++y) {
+                nums[x][y] = new ArrayCell();
+                nums[x][y].setValue(0);
             }
         }
 
@@ -71,19 +82,32 @@ public class Page1Controller {
            Считаем decide(sumCell(i,j),arr[i][j].getValue);
            Записываем результат в nums[i][j]
          */
-        for (int i = 0; i < nums.length; ++i) {
-            for (int j = 0; j < nums[0].length; ++j) {
-                nums[i][j].setValue( decide(sumCell(i,j),arr[i][j].getValue()));
+        for (int x = 0; x < nums.length; ++x) {
+            for (int y = 0; y < nums[0].length; ++y) {
+                nums[x][y].setValue( decide(sumCell(x,y),arr[x][y].getValue()));
             }
         }
 
-        for (int i = 0; i < arr.length; ++i) {
-            for (int j = 0; j < arr[0].length; ++j) {
-                arr[i][j] = nums[i][j];
+        for (int x = 0; x < arr.length; ++x) {
+            for (int y = 0; y < arr[0].length; ++y) {
+                arr[x][y] = nums[x][y];
             }
         }
 
         return "redirect:/page1";
+    }
+
+    public ArrayCell[][] turnLeft(){
+        ArrayCell[][] left=new ArrayCell[arr.length][arr[0].length];
+        for (int x = 0; x < arr.length; ++x) {
+            for (int y = 0; y < arr[0].length; ++y) {
+               left[x][y] = arr[y][x];
+            }
+        }
+        return left;
+    }
+    private int c(int x, int y){
+        return arr[x][y].getValue();
     }
 
     public int sumCell(int x, int y) {
@@ -92,43 +116,57 @@ public class Page1Controller {
         int downY = arr[0].length - 1;
         // Upper left corner
         if (x == 0 && y == 0) {
-            sum = arr[1][0].getValue() + arr[1][1].getValue() + arr[0][1].getValue()+ arr[rightX][0].getValue()+ arr[0][downY].getValue()+ arr[rightX][downY].getValue()+ arr[rightX][1].getValue()+ arr[1][downY].getValue();
+            sum = c(1,0) + c(1,1) + c(0,1)+
+                    c(rightX,0)+ c(0,downY)+ c(rightX,downY)+
+                    c(rightX,1)+ c(1,downY);
         }
         // Upper right corner
         else if (x == rightX && y == 0) {
-            sum = arr[rightX - 1][0].getValue() + arr[rightX - 1][1].getValue() + arr[rightX][1].getValue() +
-                    arr[0][0].getValue()+ arr[rightX][downY].getValue()+ arr[0][downY].getValue()+ arr[0][1].getValue()+ arr[rightX-1][downY].getValue();
+            sum = c(rightX-1,0) + c(rightX-1,1) + c(rightX,1) +
+                    c(0,0)+ c(rightX,downY)+ c(0,downY)+
+                    c(0,1)+ c(rightX-1,downY);
         }
         // Down left corner
-        else if(x == 0 && y == arr.length){
-            sum = arr[1][downY].getValue() + arr[0][downY-1].getValue() + arr[rightX-1][downY-1].getValue() + arr[0][0].getValue() + arr[rightX][0].getValue() + arr[rightX][downY].getValue()+ arr[1][0].getValue()+ arr[rightX][downY-1].getValue();
+        else if(x == 0 && y == downY){
+            sum = c(1,downY) + c(0,downY-1) + c(1,downY-1) +
+                    c(0,0) + c(rightX,0) + c(rightX,downY)+
+                    c(1,0)+ c(rightX,downY-1);
         }
         // Down right corner
-        else if (x == rightX && y == arr.length) {
-            sum = arr[rightX - 1][downY].getValue() + arr[rightX - 1][downY-1].getValue() + arr[rightX][downY-1].getValue() +
-                    arr[0][0].getValue()+ arr[0][downY].getValue()+ arr[rightX][0].getValue()+ arr[rightX-1][0].getValue()+ arr[0][downY-1].getValue();
-        }
-        // down? border cell
-        else if (x > 0 && y == downY && x < rightX) {
-            sum = arr[x+1][y].getValue() + arr[x-1][y].getValue() + arr[x][y-1].getValue() + arr[x + 1][y-1].getValue() + arr[x - 1][y-1].getValue()+ arr[x][0].getValue()+arr[x - 1][0].getValue()+arr[x + 1][0].getValue();
+        else if (x == rightX && y == downY) {
+            sum = c(rightX-1,downY) + c(rightX-1,downY-1) + c(rightX,downY-1) +
+                    c(0,0)+ c(0,downY)+ c(rightX,0)+
+                    c(rightX-1,0)+  c(0,downY-1);
         }
         // Up? border cell
         else if (x > 0 && y == 0 && x < rightX) {
-            sum = arr[x-1][y].getValue() + arr[x+1][y].getValue() + arr[x][y+1].getValue() + arr[x + 1][y+1].getValue() + arr[x - 1][y+1].getValue()+arr[x][downY].getValue()+arr[x - 1][downY].getValue()+arr[x + 1][downY].getValue();
+            sum = c(x-1,y) + c(x+1,y) +
+                    c(x-1,y+1) + c(x,y+1) + c(x+1,y+1)+
+                    c(x,downY)+c(x-1,downY)+c(x+1,downY);
+        }
+        // down? border cell
+        else if (x > 0 && y == downY && x < rightX) {
+            sum = c(x+1,y) + c(x-1,y) +
+                    c(x,y-1) + c(x+1,y-1) + c(x-1,y-1)+
+                    c(x,0)+c(x-1,0)+c(x+1,0);
         }
         // Left border cell
         else if (y > 0 && x == 0 && y < downY) {
-            sum = arr[y][0].getValue() + arr[y - 1][0].getValue() + arr[y+1][0].getValue() + arr[y + 1][1].getValue() + arr[y][1].getValue()+arr[y - 1][1].getValue()+arr[y][x].getValue()+arr[y-1][x].getValue()+arr[y+1][x].getValue();
+            sum = c(0,y-1) + c(0,y+1) +
+                    c(1,y+1) + c(1,y-1)+c(1,y)+
+                    c(rightX,y)+c(rightX,y-1)+c(rightX,y+1);
         }
         // Right border cell
         else if (y > 0 && x == rightX && y < downY) {
-            sum = arr[y - 1][x].getValue() + arr[y + 1][x].getValue() + arr[y][x-1].getValue() + arr[y + 1][x-1].getValue() + arr[y - 1][x-1].getValue()+arr[y - 1][0].getValue()+arr[y + 1][0].getValue()+arr[y][0].getValue();
+            sum = c(x-1,y) + c(x-1,y+1) + c(x-1,y-1) +
+                    c(x,y+1) + c(x,y-1)+
+                    c(0,y)+c(0,y-1)+c(0,y+1);
         }
         // Middle cell
         else if (x > 0 && y > 0 && x < rightX && y < downY) {
-            sum = arr[x - 1][y - 1].getValue() + arr[x][y - 1].getValue() + arr[x + 1][y - 1].getValue() +
-                    arr[x - 1][y].getValue() + arr[x + 1][y].getValue() +
-                    arr[x - 1][y + 1].getValue() + arr[x][y + 1].getValue() + arr[x + 1][y + 1].getValue();
+            sum = c(x-1,y-1) + c(x,y-1) + c(x+1,y-1)+
+                    c(x-1,y) + c(x+1,y)+
+                    c(x-1,y+1) + c(x,y+1) + c(x+1,y+1);
         }
         return sum;
     }
