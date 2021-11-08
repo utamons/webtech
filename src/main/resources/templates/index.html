@@ -7,12 +7,17 @@
     <title>Home page</title>
     <link href="/css/my.css" rel="stylesheet" media="screen"/>
 </head>
+<script>
+    function menuClick(obj) {
+        console.log(obj.id)
+    }
+</script>
 <body>
 
 <div id="menu">
-    <p>Page 1 - (1)</p>
-    <p>Page 2 - (2)</p>
-    <p>Page 3 - (3)</p>
+    <p id="1" onclick="menuClick(this)">Page 1 - (1)</p>
+    <p id="2" onclick="menuClick(this)">Page 2 - (2)</p>
+    <p id="3"  onclick="menuClick(this)">Page 3 - (3)</p>
 </div>
 
 <form th:action="@{/selectMenuItem}" method="post">

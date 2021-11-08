@@ -28,10 +28,7 @@ Practice:
 
 Vanilla JS:
 
-- Hello world embedded.
-- Hello world included.
-- Menu: text field validation.
-- Game-of-Life: text field validation.
+- Implement a main menu with mouse hover and clicks.
 
 jQuery:
 
