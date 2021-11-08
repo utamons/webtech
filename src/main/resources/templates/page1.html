@@ -9,9 +9,10 @@
 
 <div>
     <p>PAGE1</p>
+
     <table>
         <tr th:each="row : ${x}">
-            <td th:attr="style=${col.style}" th:each="col : ${row}" th:text="${col.value}"></td>
+            <td onclick="alert(this.cellIndex+'x'+this.parentNode.rowIndex);" th:attr="style=${col.style}" th:each="col : ${row}" th:text="${col.value}"></td>
         </tr>
     </table>
     <form th:action="@{/setNumber}" method="post">

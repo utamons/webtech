@@ -56,6 +56,19 @@ public class Page1Controller {
         return "redirect:/page1";
     }
 
+
+    /*
+    public String number(@RequestParam(value = "num") String num) {
+        String[] numbers = num.split(",");
+        String num1 = numbers[0];
+        String num2 = numbers[1];
+        int x = Integer.parseInt(num1);
+        int y = Integer.parseInt(num2);
+        arr[x][y].setValue(1);
+
+        return "redirect:/page1";
+    }*/
+
     @PostMapping("/clear")
     public String clean(){
         for (int i = 0; i < arr.length; ++i) {
