@@ -5,12 +5,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title>Home page</title>
+
     <link href="/css/my.css" rel="stylesheet" media="screen"/>
 </head>
 <script>
     // Make in external (not embedded)
-    function menuClick(obj) {
-        console.log(obj.id)
+    function menuClick(menuItem) {
+        const form = document.getElementById('form');
+        const input = document.getElementById("menuItem");
+        input.value = menuItem.id;
+        console.log(menuItem.id);
+        form.submit();
     }
 </script>
 <body>
@@ -21,10 +26,8 @@
     <p id="3"  onclick="menuClick(this)">Page 3 - (3)</p>
 </div>
 
-<form th:action="@{/selectMenuItem}" method="post">
-    <label for="menuItem">Select menu item</label>
-    <input id="menuItem" type="text" name="menuItem"/>
-    <input id="submitButton" type="submit" value="Submit"/>
+<form id="form" th:action="@{/selectMenuItem}" method="post">
+    <input hidden id="menuItem" type="text" name="menuItem"/>
 </form>
 
 </body>

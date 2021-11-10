@@ -12,10 +12,13 @@ p {
 }
 table, th, td {
 
- border: 1px solid darkgray;
+ border: 1px lightgray;
     color: black;
-    top: 50%;
-    left: 50%;
-    border: 1px solid darkgray;
+
+    border: 1px solid  lightgray;
     border-collapse: collapse;
+}
+p:hover {
+    background-color: dodgerblue;
+    color:white;
 }

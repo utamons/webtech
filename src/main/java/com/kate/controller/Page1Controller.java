@@ -11,10 +11,51 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class Page1Controller {
 
     private ArrayCell[][] arr;
-    ArrayCell[][] nums = new ArrayCell[5][5];
+    private ArrayCell[][] nums;
+   // ArrayCell[][] nums = new ArrayCell[5][5];
+    boolean autoPlay=false;
+
+    @PostMapping("/size")
+    public String size(@RequestParam(value = "num") String num){
+        String[] numbers = num.split(",");
+        String num1 = numbers[0];
+        String num2 = numbers[1];
+        int x = Integer.parseInt(num1);
+        int y = Integer.parseInt(num2);
+        arr = new ArrayCell[x][y];
+        nums = new ArrayCell[x][y];
+        fill();
+        return "redirect:/page1";
+    }
+
+    public String genNum(@RequestParam(value = "gen") String gen){
+        int x = Integer.parseInt(gen);
+        x++;
+        gen=String.valueOf(x);
+        return "redirect:/page1";
+    }
+
+    @PostMapping("/clear")
+    public String fill(){
+        for (int i = 0; i < arr.length; ++i) {
+            for (int j = 0; j < arr[0].length; ++j) {
+                arr[i][j] = new ArrayCell();
+                arr[i][j].setValue(0);
+            }
+        }
+        return "redirect:/page1";
+    }
+
+    @PostMapping("/play")
+    public String play(@RequestParam(value = "autoPlay") boolean x){
+        autoPlay=x;
+        return "redirect:/page1";
+    }
+
 
     public Page1Controller() {
         arr = new ArrayCell[5][5];
+        nums = new ArrayCell[5][5];
         for (int i = 0; i < arr.length; ++i) {
             for (int j = 0; j < arr[0].length; ++j) {
                 arr[i][j] = new ArrayCell();
@@ -25,7 +66,6 @@ public class Page1Controller {
 
     @GetMapping("/page1")
     public String getPage1(Model model) {
-
         for (int i = 0; i < arr.length; ++i) {
             for (int j = 0; j < arr[0].length; ++j) {
                 if (arr[i][j].getValue() == 0) {
@@ -35,12 +75,12 @@ public class Page1Controller {
                     arr[i][j].setStyle("background-color:green; color:green");
 
                 }
-                System.out.print(arr[i][j].getValue() + " ");
+
             }
-            System.out.println();
         }
         model.addAttribute("x", turnLeft());
-
+        model.addAttribute("autoPlay", autoPlay);
+        System.out.println(autoPlay);
         return "page1";
     }
 
@@ -69,7 +109,7 @@ public class Page1Controller {
         return "redirect:/page1";
     }*/
 
-    @PostMapping("/clear")
+ /*   @PostMapping("/clear")
     public String clean(){
         for (int i = 0; i < arr.length; ++i) {
             for (int j = 0; j < arr[0].length; ++j) {
@@ -78,7 +118,7 @@ public class Page1Controller {
             }
         }
         return "redirect:/page1";
-    }
+    }*/
 
     @PostMapping("/move")
     public String moveNum() {
@@ -90,11 +130,6 @@ public class Page1Controller {
             }
         }
 
-        /*
-           Идём по всем элементам массива
-           Считаем decide(sumCell(i,j),arr[i][j].getValue);
-           Записываем результат в nums[i][j]
-         */
         for (int x = 0; x < nums.length; ++x) {
             for (int y = 0; y < nums[0].length; ++y) {
                 nums[x][y].setValue( decide(sumCell(x,y),arr[x][y].getValue()));

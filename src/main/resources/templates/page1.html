@@ -6,9 +6,9 @@
     <link href="/css/my.css" rel="stylesheet" media="screen"/>
     <script src="/js/page1.js"></script>
 </head>
-<body>
+<body onload="autoPlay()">
 
-<div>
+<div align="center">
     <p>PAGE1</p>
 
     <table>
@@ -16,17 +16,40 @@
             <td onclick="submitCoords(this);" th:attr="style=${col.style}" th:each="col : ${row}" th:text="${col.value}"></td>
         </tr>
     </table>
+
     <form id="mainForm" th:action="@{/setNumber}" method="post">
-        <input hidden onblur="validate(this)" id="num" type="text" name="num" size="10" align="middle"/>
+        <input hidden onblur="validate(this)" id="num" type="text" name="num" size="10" align="middle" t/>
     </form>
-    <form th:action="@{/move}" method="post">
+
+    <label>Number of generations: </label>
+    <label id="genNum" name="gen"></label>
+    <p></p>
+
+    <form  th:action="@{/size}" method="post">
+        <label>Set table size</label>
+        <p></p>
+        <input  id="size" type="text" name="num" size="10" align="middle"/>
+        <button>Submit</button>
+        <p></p>
+    </form>
+
+    <form id="sendPlay" th:action="@{/play}" method="post">
+        <input hidden id="autoPlay" type="text" name="autoPlay" th:value="${autoPlay}"/>
+        <button type="button" onclick="start()">Start</button>
+        <button type="button" onclick="stopPlay()">Stop</button>
+    </form>
+
+
+    <form id="nextForm" th:action="@{/move}" method="post">
         <button>Next</button>
     </form> <form th:action="@{/clear}" method="post">
+
     <button>Clear</button>
+    <input id="repeat input" hidden>
 </form>
 
     <a href="/">Home</a>
 </div>
-
++
 </body>
 </html>

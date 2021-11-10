@@ -28,7 +28,7 @@ Practice:
 
 Vanilla JS:
 
-- Implement a main menu with mouse hover and clicks.
+
 
 jQuery:
 
@@ -41,19 +41,13 @@ Future Improvements:
 Main menu:
 ----------
 
-- JS: Make the menu clickable. (jQuery menu - https://jQueryui.com/menu/#categories)
-- JS: Get rid of the text field.
 
 Game-of-Life:
 -------------
 
 - Styles: make cells squares.
-- Styles: make cells borders thin and light gray.
-- Styles: make the game field centered
 
-- JS: Toggle cells with a mouse click
-- JS: Implement auto-play (Start/Stop buttons, get rid of Next button)
 
-- Game: Allow to choose the field dimensions.
+
 - Game: Show every generation in a different color (in a cycle).
 - Game: Show a number of a generation in a field header.
