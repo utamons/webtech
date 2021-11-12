@@ -1,24 +1,26 @@
 html {
     height: 100%;
 }
+
 p {
     font-family: serif;
 }
+
 .red {
     color: red;
 }
+
 .green {
     color: green;
 }
+
 table, th, td {
-
- border: 1px lightgray;
-    color: black;
-
-    border: 1px solid  lightgray;
+    border: 1px solid black;
     border-collapse: collapse;
 }
+
+
 p:hover {
     background-color: dodgerblue;
-    color:white;
+    color: white;
 }

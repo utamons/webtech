@@ -1,42 +1,58 @@
 let playInterval;
 function submitCoords(obj) {
-    const input = document.getElementById('num');
-    const form = document.getElementById('mainForm');
-    input.value = obj.cellIndex+','+obj.parentNode.rowIndex;
-    form.submit();
+    postCoord(obj.parentNode.rowIndex,obj.cellIndex);
 }
 
 function start() {
-    const autoPlay = document.getElementById('autoPlay');
-    const form = document.getElementById('sendPlay');
-    autoPlay.value = true;
     console.log('start')
-    form.submit();
-}
-
-function autoPlay(){
-    const form = document.getElementById('nextForm');
-    let play=document.getElementById('autoPlay');
-    if(play.value==='true'){
-        console.log(play.value)
-        setTimeout(()=>form.submit(), 500)
-    }
 }
 
 function stopPlay(){
-    const autoPlay = document.getElementById('autoPlay');
-    const form = document.getElementById('sendPlay');
-    autoPlay.value = false;
-    console.log('stop')
-    form.submit();
+    clearInterval(playInterval)
 }
-function validate(textField) {
-    console.log(textField.value);
+
+function load(){
+    loadArray(false);
 }
-function tableMouseOver() {
-    console.log('mouse over');
+
+function loadArray(play) {
+    fetch('http://localhost:8080/api/arr?move='+play)
+        .then(response => response.json())
+        .then(arr => renderArray(arr));
 }
-function keyPress(event) {
-    console.log(event.key)
+
+function renderArray(arr) {
+    console.log(arr)
+    const table = document.getElementById('playGround')
+    table.innerHTML = ''
+    for (let y=0; y<arr.length; ++y) {
+        const tr = document.createElement('tr');
+        for (let x=0; x<arr[0].length; ++x) {
+            const td = document.createElement('td')
+            td.setAttribute('onclick','submitCoords(this);');
+            td.setAttribute('style',arr[y][x].style);
+            td.innerText = arr[y][x].value;
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+
+}
+
+function postCoord(x,y) {
+    const coord = {
+        x: x,
+        y: y
+    }
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(coord),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+    fetch('http://localhost:8080/api/coord', options)
+        .then(res => res.json())
+        .then(() => loadArray(false));
 }
 
