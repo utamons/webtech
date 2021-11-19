@@ -62,8 +62,10 @@ public class Page1Controller {
         }
         return arr;
     }
-
-    public String size(@RequestParam(value = "num") String num) {
+    @GetMapping(value = "/api/size")
+    @ResponseBody
+    public String size(@PathParam(value = "num") String num) {
+        System.out.println(num);
         String[] numbers = num.split(",");
         String num1 = numbers[0];
         String num2 = numbers[1];
@@ -82,14 +84,16 @@ public class Page1Controller {
         return "redirect:/page1";
     }
 
-    public String clear() {
+    @GetMapping(value = "/api/clear")
+    @ResponseBody
+    public void clear() {
+        System.out.println("clear");
         for (int i = 0; i < arr.length; ++i) {
             for (int j = 0; j < arr[0].length; ++j) {
                 arr[i][j] = new ArrayCell();
                 arr[i][j].setValue(0);
             }
         }
-        return "redirect:/page1";
     }
 
     public void play(boolean x) {

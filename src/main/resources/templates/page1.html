@@ -12,9 +12,7 @@
     <p>PAGE1</p>
 
     <table id="playGround">
-        <!--tr th:each="row : ${x}" ">
-            <td onclick="submitCoords(this);" th:attr="style=${col.style}" th:each="col : ${row}" th:text="${col.value}"></td>
-        </tr-->
+
     </table>
 
     <label>Number of generations: </label>
@@ -24,15 +22,15 @@
     <label>Set table size</label>
     <p></p>
     <input id="size" type="text" name="num" size="10" align="middle"/>
-    <button type="button">Submit</button>
+    <button type="button" onclick="size()">Submit</button>
     <p></p>
 
     <button type="button" onclick="start()">Start</button>
     <button type="button" onclick="stopPlay()">Stop</button>
 
-    <button type="button">Next</button>
+    <button type="button" onclick="loadArray(true)">Next</button>
 
-    <button type="button">Clear</button>
+    <button type="button" onclick="clearArr()">Clear</button>
     <input id="repeat input" hidden>
 
     <a href="/">Home</a>
