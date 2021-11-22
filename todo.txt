@@ -1,21 +1,6 @@
 Theory:
 =======
 
-Vanilla JS:
-
-- Introduction to Javascript.
-- Javascript in a browser.
-- Embedded JS.
-- External JS.
-- Browser console - debug, error.
-- JS 'Hello, world.'
-- Events and event handlers.
-- Mouse click.
-- Mouse hover.
-- Key press.
-- Blur.
-- document.getElementBy.
-
 jQuery:
 
 - jQuery library.
@@ -26,10 +11,6 @@ jQuery:
 Practice:
 =========
 
-Vanilla JS:
-
-
-
 jQuery:
 
 - Refactor fields validations with jQuery selectors.
@@ -38,16 +19,10 @@ jQuery:
 Future Improvements:
 =============
 
-Main menu:
-----------
-
-
 Game-of-Life:
 -------------
 
-- Styles: make cells squares.
+- Show every generation in a different color (in a cycle).
+- Show a number of a generation in a field header.
+- Save/load the field dimensions in a file.
 
-
-
-- Game: Show every generation in a different color (in a cycle).
-- Game: Show a number of a generation in a field header.
