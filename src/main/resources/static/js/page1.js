@@ -1,4 +1,5 @@
 let playInterval;
+let x=0;
 function submitCoords(obj) {
     postCoord(obj.parentNode.rowIndex,obj.cellIndex);
 }
@@ -6,6 +7,11 @@ function submitCoords(obj) {
 function clearArr(){
      fetch('http://localhost:8080/api/clear')
             .then(() => loadArray(false));
+}
+
+function genCount(){
+document.getElementById('genNum').innerText = x;
+x++;
 }
 
 function start() {
@@ -31,7 +37,11 @@ let numInput = document.getElementById('size')
 function loadArray(play) {
     fetch('http://localhost:8080/api/arr?move='+play)
         .then(response => response.json())
-        .then(arr => renderArray(arr));
+        .then(arr => {
+            renderArray(arr)
+            if(play)
+               genCount()
+        });
 }
 
 function renderArray(arr) {
