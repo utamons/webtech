@@ -33,8 +33,15 @@ function load(){
 
 function size(){
 let numInput = document.getElementById('size')
+let x=numInput.value.split(',')
+let is=isNaN(x)
+if(is==true){
+alert("Input numbers in the field");
+}else{
  fetch('http://localhost:8080/api/size?num='+numInput.value)
             .then(() => loadArray(true));
+}
+
 
 }
 

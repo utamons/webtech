@@ -80,17 +80,25 @@ public class Page1Controller {
     public String size(@PathParam(value = "num") String num) throws IOException {
         System.out.println(num);
         String[] numbers = num.split(",");
-        FileWriter nFile = new FileWriter("file1.txt");
-        nFile.write(num);
-        nFile.close();
-        String num1 = numbers[0];
-        String num2 = numbers[1];
-        int x = Integer.parseInt(num1);
-        int y = Integer.parseInt(num2);
-        arr = new ArrayCell[x][y];
-        nums = new ArrayCell[x][y];
-        clear();
-        return "redirect:/page1";
+        if(num.matches(("q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m,.,;,/,"))){
+            FileWriter nFile = new FileWriter("file1.txt");
+            nFile.write("10,10");
+            nFile.close();
+            return "redirect:/page1";
+        }else{
+            FileWriter nFile = new FileWriter("file1.txt");
+            nFile.write(num);
+            nFile.close();
+            String num1 = numbers[0];
+            String num2 = numbers[1];
+            int x = Integer.parseInt(num1);
+            int y = Integer.parseInt(num2);
+            arr = new ArrayCell[x][y];
+            nums = new ArrayCell[x][y];
+            clear();
+            return "redirect:/page1";
+        }
+
     }
 
 
