@@ -7,12 +7,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 @Controller
 public class Page1Controller {
 
     private ArrayCell[][] arr;
     private ArrayCell[][] nums;
+    private String[] colors = {"blue", "red", "yellow"};
+    private int x = 0;
     // ArrayCell[][] nums = new ArrayCell[5][5];
     boolean autoPlay = false;
 
@@ -43,18 +50,23 @@ public class Page1Controller {
     @GetMapping(value = "/api/arr", produces = "application/json")
     @ResponseBody
     public ArrayCell[][] getArr(@PathParam("move") boolean move) {
-        System.out.println(move);
+        System.out.println("get arr-move- "+move);
         if (move) {
             nextMove();
+            x++;
         }
-
+        System.out.println("Длина массива"+arr.length);
         for (int i = 0; i < arr.length; ++i) {
             for (int j = 0; j < arr[0].length; ++j) {
                 if (arr[i][j].getValue() == 0) {
                     arr[i][j].setStyle("background-color:white; color:white");
 
                 } else {
-                    arr[i][j].setStyle("background-color:green; color:green");
+                    if (x == colors.length) {
+                        x = 0;
+                    }
+                    arr[i][j].setStyle("background-color:" + colors[x] + ";" + "color:" + colors[x]);
+
 
                 }
 
@@ -62,11 +74,15 @@ public class Page1Controller {
         }
         return arr;
     }
+
     @GetMapping(value = "/api/size")
     @ResponseBody
-    public String size(@PathParam(value = "num") String num) {
+    public String size(@PathParam(value = "num") String num) throws IOException {
         System.out.println(num);
         String[] numbers = num.split(",");
+        FileWriter nFile = new FileWriter("file1.txt");
+        nFile.write(num);
+        nFile.close();
         String num1 = numbers[0];
         String num2 = numbers[1];
         int x = Integer.parseInt(num1);
@@ -77,12 +93,6 @@ public class Page1Controller {
         return "redirect:/page1";
     }
 
-    public String genNum(@RequestParam(value = "gen") String gen) {
-        int x = Integer.parseInt(gen);
-        x++;
-        gen = String.valueOf(x);
-        return "redirect:/page1";
-    }
 
     @GetMapping(value = "/api/clear")
     @ResponseBody
@@ -101,9 +111,24 @@ public class Page1Controller {
     }
 
 
-    public Page1Controller() {
-        arr = new ArrayCell[5][5];
-        nums = new ArrayCell[5][5];
+    public Page1Controller() throws IOException {
+        File f=new File("file1.txt");
+        if(f.exists()) {
+            FileReader fr = new FileReader(f);
+            Scanner scan = new Scanner(fr);
+            String size = scan.nextLine();
+            String[] numbers = size.split(",");
+            String num1 = numbers[0];
+            String num2 = numbers[1];
+            int x = Integer.parseInt(num1);
+            int y = Integer.parseInt(num2);
+            arr = new ArrayCell[x][y];
+            nums = new ArrayCell[x][y];
+            fr.close();
+        }else{
+            arr = new ArrayCell[5][5];
+            nums = new ArrayCell[5][5];
+        }
         for (int i = 0; i < arr.length; ++i) {
             for (int j = 0; j < arr[0].length; ++j) {
                 arr[i][j] = new ArrayCell();

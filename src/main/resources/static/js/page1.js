@@ -7,6 +7,9 @@ function submitCoords(obj) {
 function clearArr(){
      fetch('http://localhost:8080/api/clear')
             .then(() => loadArray(false));
+            x=0;
+            document.getElementById('genNum').innerText = x;
+
 }
 
 function genCount(){
@@ -32,6 +35,7 @@ function size(){
 let numInput = document.getElementById('size')
  fetch('http://localhost:8080/api/size?num='+numInput.value)
             .then(() => loadArray(true));
+
 }
 
 function loadArray(play) {

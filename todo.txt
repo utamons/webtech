@@ -21,8 +21,5 @@ Future Improvements:
 
 Game-of-Life:
 -------------
-
-- Show every generation in a different color (in a cycle).
-- Show a number of a generation in a field header.
 - Save/load the field dimensions in a file.
 
