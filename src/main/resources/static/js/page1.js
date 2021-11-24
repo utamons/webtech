@@ -20,11 +20,9 @@ function genCount() {
 
 function start() {
     playInterval = setInterval(() => loadArray(true), 500)
-    console.log('start')
 }
 
 function stopPlay() {
-    console.log('stop'),
         clearInterval(playInterval)
 }
 
@@ -35,8 +33,9 @@ function load() {
 function size() {
     let numInput = document.getElementById('size')
     let x = numInput.value.split(',')
-    let is = isNaN(x)
-    if (is == true) {
+    let is = isNaN(x[0])
+    let is1 = isNaN(x[1])
+    if (is || is1) {
         alert("Input numbers in the field");
     } else {
         fetch('http://localhost:8080/api/size?num=' + numInput.value)
@@ -55,7 +54,7 @@ function loadArray(play) {
 }
 
 function renderArray(arr) {
-    console.log(arr)
+
     const table = document.getElementById('playGround')
     table.innerHTML = ''
     for (let y = 0; y < arr.length; ++y) {

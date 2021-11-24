@@ -2,6 +2,7 @@ package com.kate.controller;
 
 import com.kate.model.ArrayCell;
 import com.kate.model.Coord;
+import com.kate.model.Save;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -254,6 +255,8 @@ public class LifeController {
         else
             return 0;
     }
+
+
 }
 
 

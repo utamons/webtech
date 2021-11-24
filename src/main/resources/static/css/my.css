@@ -1,9 +1,17 @@
 html {
     height: 100%;
+     background: #1abc9c;
+}
+header{
+ padding: 5px;
+  text-align: center;
+  font-size: 10px;
+    color: white;
 }
 
 p {
     font-family: serif;
+      color: white;
 }
 
 .red {
@@ -17,8 +25,19 @@ p {
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
+      color: white;
 }
 
+div{
+margin: auto;
+  width: 30%;
+ padding-top: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+ border: 1px solid white;
+      color: white;
+}
 
 p:hover {
     background-color: dodgerblue;
