@@ -2,6 +2,8 @@ package com.kate.controller;
 
 import com.kate.model.ArrayCell;
 import com.kate.model.Coord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.Scanner;
 
 @Controller
 public class Page1Controller {
+    private static final Logger log = LoggerFactory.getLogger(Page1Controller.class);
 
     private ArrayCell[][] arr;
     private ArrayCell[][] nums;
@@ -27,7 +30,7 @@ public class Page1Controller {
     @PostMapping(value = "/api/coord", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public Coord postCoord(@RequestBody Coord coord) {
-        System.out.println(coord.getX() + "," + coord.getY());
+        log.debug("Got cell coordinates: {}",coord.getX() + "," + coord.getY());
         if (c(coord.getX(), coord.getY()) == 1)
             arr[coord.getX()][coord.getY()].setValue(0);
         else
@@ -50,12 +53,12 @@ public class Page1Controller {
     @GetMapping(value = "/api/arr", produces = "application/json")
     @ResponseBody
     public ArrayCell[][] getArr(@PathParam("move") boolean move) {
-        System.out.println("get arr-move- "+move);
+        log.debug("Invoke, move = {}",move);
         if (move) {
             nextMove();
             x++;
         }
-        System.out.println("Длина массива"+arr.length);
+        log.debug("Array length: {}",arr.length);
         for (int i = 0; i < arr.length; ++i) {
             for (int j = 0; j < arr[0].length; ++j) {
                 if (arr[i][j].getValue() == 0) {
@@ -78,7 +81,7 @@ public class Page1Controller {
     @GetMapping(value = "/api/size")
     @ResponseBody
     public String size(@PathParam(value = "num") String num) throws IOException {
-        System.out.println(num);
+        log.debug("Invoke, num={}",num);
         String[] numbers = num.split(",");
         if(num.matches(("q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m,.,;,/,"))){
             FileWriter nFile = new FileWriter("file1.txt");
@@ -105,7 +108,7 @@ public class Page1Controller {
     @GetMapping(value = "/api/clear")
     @ResponseBody
     public void clear() {
-        System.out.println("clear");
+        log.debug("Invoke");
         for (int i = 0; i < arr.length; ++i) {
             for (int j = 0; j < arr[0].length; ++j) {
                 arr[i][j] = new ArrayCell();
