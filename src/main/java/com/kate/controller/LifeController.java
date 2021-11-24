@@ -16,12 +16,12 @@ import java.io.IOException;
 import java.util.Scanner;
 
 @Controller
-public class Page1Controller {
-    private static final Logger log = LoggerFactory.getLogger(Page1Controller.class);
+public class LifeController {
+    private static final Logger log = LoggerFactory.getLogger(LifeController.class);
 
     private ArrayCell[][] arr;
     private ArrayCell[][] nums;
-    private String[] colors = {"blue", "red", "yellow"};
+    private final String[] colors = {"blue", "red", "yellow"};
     private int x = 0;
     // ArrayCell[][] nums = new ArrayCell[5][5];
     boolean autoPlay = false;
@@ -30,7 +30,7 @@ public class Page1Controller {
     @PostMapping(value = "/api/coord", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public Coord postCoord(@RequestBody Coord coord) {
-        log.debug("Got cell coordinates: {}",coord.getX() + "," + coord.getY());
+        log.debug("Got cell coordinates: {}", coord.getX() + "," + coord.getY());
         if (c(coord.getX(), coord.getY()) == 1)
             arr[coord.getX()][coord.getY()].setValue(0);
         else
@@ -53,26 +53,22 @@ public class Page1Controller {
     @GetMapping(value = "/api/arr", produces = "application/json")
     @ResponseBody
     public ArrayCell[][] getArr(@PathParam("move") boolean move) {
-        log.debug("Invoke, move = {}",move);
+        log.debug("Invoke, move = {}", move);
         if (move) {
             nextMove();
             x++;
         }
-        log.debug("Array length: {}",arr.length);
-        for (int i = 0; i < arr.length; ++i) {
+        log.debug("Array length: {}", arr.length);
+        for (ArrayCell[] arrayCells : arr) {
             for (int j = 0; j < arr[0].length; ++j) {
-                if (arr[i][j].getValue() == 0) {
-                    arr[i][j].setStyle("background-color:white; color:white");
-
+                if (arrayCells[j].getValue() == 0) {
+                    arrayCells[j].setStyle("background-color:white; color:white");
                 } else {
                     if (x == colors.length) {
                         x = 0;
                     }
-                    arr[i][j].setStyle("background-color:" + colors[x] + ";" + "color:" + colors[x]);
-
-
+                    arrayCells[j].setStyle("background-color:" + colors[x] + ";" + "color:" + colors[x]);
                 }
-
             }
         }
         return arr;
@@ -81,27 +77,19 @@ public class Page1Controller {
     @GetMapping(value = "/api/size")
     @ResponseBody
     public String size(@PathParam(value = "num") String num) throws IOException {
-        log.debug("Invoke, num={}",num);
+        log.debug("Invoke, num={}", num);
         String[] numbers = num.split(",");
-        if(num.matches(("q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m,.,;,/,"))){
-            FileWriter nFile = new FileWriter("file1.txt");
-            nFile.write("10,10");
-            nFile.close();
-            return "redirect:/page1";
-        }else{
-            FileWriter nFile = new FileWriter("file1.txt");
-            nFile.write(num);
-            nFile.close();
-            String num1 = numbers[0];
-            String num2 = numbers[1];
-            int x = Integer.parseInt(num1);
-            int y = Integer.parseInt(num2);
-            arr = new ArrayCell[x][y];
-            nums = new ArrayCell[x][y];
-            clear();
-            return "redirect:/page1";
-        }
-
+        FileWriter nFile = new FileWriter("file1.txt");
+        nFile.write(num);
+        nFile.close();
+        String num1 = numbers[0];
+        String num2 = numbers[1];
+        int x = Integer.parseInt(num1);
+        int y = Integer.parseInt(num2);
+        arr = new ArrayCell[x][y];
+        nums = new ArrayCell[x][y];
+        clear();
+        return "redirect:/page1";
     }
 
 
@@ -117,14 +105,9 @@ public class Page1Controller {
         }
     }
 
-    public void play(boolean x) {
-        autoPlay = x;
-    }
-
-
-    public Page1Controller() throws IOException {
-        File f=new File("file1.txt");
-        if(f.exists()) {
+    public LifeController() throws IOException {
+        File f = new File("file1.txt");
+        if (f.exists()) {
             FileReader fr = new FileReader(f);
             Scanner scan = new Scanner(fr);
             String size = scan.nextLine();
@@ -136,7 +119,7 @@ public class Page1Controller {
             arr = new ArrayCell[x][y];
             nums = new ArrayCell[x][y];
             fr.close();
-        }else{
+        } else {
             arr = new ArrayCell[5][5];
             nums = new ArrayCell[5][5];
         }
@@ -150,13 +133,13 @@ public class Page1Controller {
 
     @GetMapping("/page1")
     public String getPage1(Model model) {
-        for (int i = 0; i < arr.length; ++i) {
-            for (int j = 0; j < arr[0].length; ++j) {
-                if (arr[i][j].getValue() == 0) {
-                    arr[i][j].setStyle("background-color:white; color:white");
+        for (ArrayCell[] arrayCells : arr) {
+            for (ArrayCell arrayCell : arrayCells) {
+                if (arrayCell.getValue() == 0) {
+                    arrayCell.setStyle("background-color:white; color:white");
 
                 } else {
-                    arr[i][j].setStyle("background-color:green; color:green");
+                    arrayCell.setStyle("background-color:green; color:green");
 
                 }
 
@@ -183,16 +166,14 @@ public class Page1Controller {
         }
 
         for (int x = 0; x < arr.length; ++x) {
-            for (int y = 0; y < arr[0].length; ++y) {
-                arr[x][y] = nums[x][y];
-            }
+            System.arraycopy(nums[x], 0, arr[x], 0, arr[0].length);
         }
     }
 
     public ArrayCell[][] turnLeft() {
-        ArrayCell[][] left = new ArrayCell[arr.length][arr[0].length];
-        for (int x = 0; x < arr.length; ++x) {
-            for (int y = 0; y < arr[0].length; ++y) {
+        ArrayCell[][] left = new ArrayCell[arr[0].length][arr.length];
+        for (int x = 0; x < arr[0].length; ++x) {
+            for (int y = 0; y < arr.length; ++y) {
                 left[x][y] = arr[y][x];
             }
         }
@@ -272,8 +253,6 @@ public class Page1Controller {
             return cellValue;
         else
             return 0;
-
-
     }
 }
 
