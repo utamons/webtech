@@ -2,7 +2,6 @@ package com.kate.controller;
 
 import com.kate.model.ArrayCell;
 import com.kate.model.Coord;
-import com.kate.model.Save;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,7 @@ public class LifeController {
 
     private ArrayCell[][] arr;
     private ArrayCell[][] nums;
-    private final String[] colors = {"blue", "red", "yellow"};
+    private final String[] colors = {"blue", "red", "green"};
     private int x = 0;
     // ArrayCell[][] nums = new ArrayCell[5][5];
     boolean autoPlay = false;
@@ -58,22 +57,26 @@ public class LifeController {
         if (move) {
             nextMove();
             x++;
+            if (x == colors.length) {
+                x = 0;
+            }
         }
         log.debug("Array length: {}", arr.length);
         for (ArrayCell[] arrayCells : arr) {
             for (int j = 0; j < arr[0].length; ++j) {
                 if (arrayCells[j].getValue() == 0) {
                     arrayCells[j].setStyle("background-color:white; color:white");
-                } else {
-                    if (x == colors.length) {
-                        x = 0;
-                    }
+                } else if (arrayCells[j].getStyle().equals("background-color:white; color:white") ||
+                        arrayCells[j].getStyle().equals("")) {
                     arrayCells[j].setStyle("background-color:" + colors[x] + ";" + "color:" + colors[x]);
                 }
+
             }
         }
+
         return arr;
     }
+
 
     @GetMapping(value = "/api/size")
     @ResponseBody
@@ -149,7 +152,7 @@ public class LifeController {
         model.addAttribute("x", turnLeft());
         model.addAttribute("autoPlay", autoPlay);
         System.out.println(autoPlay);
-        return "page1";
+        return "life";
     }
 
     public void nextMove() {
