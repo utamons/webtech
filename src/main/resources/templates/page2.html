@@ -1,13 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Page 2</title>
-</head>
-<body>
+    <title>Page 1</title>
+    <link href="/css/my.css" rel="stylesheet" media="screen"/>
+    <script src="/js/page2.js"></script>
 
-<div>
-    <p>PAGE2</p>
+</head>
+
+<header>
+    <h1>Тетрис будет, отвечаю</h1>
+</header>
+<body onload="load()">
+
+<div align="center">
+
+    <table id="playGround">
+
+    </table>
+    <button type="button" onclick="start()">Start</button>
+    <button type="button" onclick="stopPlay()">Stop</button>
+
+    <input id="repeat input" hidden>
+
     <a href="/">Home</a>
 </div>
 

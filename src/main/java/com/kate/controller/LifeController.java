@@ -166,6 +166,7 @@ public class LifeController {
         for (int x = 0; x < nums.length; ++x) {
             for (int y = 0; y < nums[0].length; ++y) {
                 nums[x][y].setValue(decide(sumCell(x, y), arr[x][y].getValue()));
+                nums[x][y].setStyle(arr[x][y].getStyle());
             }
         }
 
