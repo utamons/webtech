@@ -1,6 +1,5 @@
 let playInterval;
-let x =0;
-let oldArr;
+let x = 0;
 
 function submitCoords(obj) {
     postCoord(obj.parentNode.rowIndex, obj.cellIndex);
@@ -9,14 +8,14 @@ function submitCoords(obj) {
 function clearArr() {
     fetch('http://localhost:8080/api/clear')
         .then(() => loadArray(false));
-    x=0;
+    x = 0;
     document.getElementById('genNum').innerText = x;
 
 }
 
 function genCount() {
     document.getElementById('genNum').innerText = x;
-    x++;
+    console.log("x=", x)
 }
 
 function start() {
@@ -46,38 +45,15 @@ function size() {
     }
 }
 
-function compare(arr, oldArr) {
-    for (let i = 0; i < arr.length; i++) {
-        for (let j = 0; j < arr[0].length; j++) {
-            if (arr[i][j].value !== oldArr[i][j].value) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-
 function loadArray(play) {
     fetch('http://localhost:8080/api/arr?move=' + play)
         .then(response => response.json())
-        .then(arr => {
+        .then(state => {
+            const arr = state.field;
             renderArray(arr)
-
-            if (play) {
-                const equals = compare(arr, oldArr);
-                console.log('equals равно ', equals)
-                if (equals) {
-                    stopPlay()
-                    console.log('stopped playing')
-                } else {
-                    genCount()
-                }
-            }
-            oldArr = Array.from(arr)
-
+            x = state.genValue;
+            genCount()
         });
-
 }
 
 function renderArray(arr) {

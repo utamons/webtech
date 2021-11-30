@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class Page2Controller {
+public class TetrisController {
     private ArrayCell[][] arr;
     private ArrayCell[][] nums;
 
@@ -21,6 +21,7 @@ public class Page2Controller {
                 arr[i][j].setValue(0);
                 System.out.println(arr[i][j]);
             }
+
            /* for (ArrayCell[] arrayCells : arr) {
                 for (ArrayCell arrayCell : arrayCells) {
                     if (arrayCell.getValue() == 0) {
@@ -34,7 +35,14 @@ public class Page2Controller {
             }*/
 
         }
-        return "page2";
+        arr[0][1].setValue(1);
+        arr[0][1].setStyle("green");
+        arr[1][1].setValue(1);
+        arr[1][1].setStyle("green");
+        arr[2][1].setValue(1);
+        arr[2][1].setStyle("green");
+
+        return "tetris";
     }
 
 

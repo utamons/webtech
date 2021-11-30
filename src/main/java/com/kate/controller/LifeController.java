@@ -1,12 +1,17 @@
 package com.kate.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kate.model.ArrayCell;
 import com.kate.model.Coord;
+import com.kate.model.Save;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.websocket.server.PathParam;
 import java.io.File;
@@ -14,6 +19,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+
 
 @Controller
 public class LifeController {
@@ -23,6 +29,7 @@ public class LifeController {
     private ArrayCell[][] nums;
     private final String[] colors = {"blue", "red", "green"};
     private int x = 0;
+    private int count=0;
     // ArrayCell[][] nums = new ArrayCell[5][5];
     boolean autoPlay = false;
 
@@ -36,6 +43,19 @@ public class LifeController {
         else
             arr[coord.getX()][coord.getY()].setValue(1);
         return coord;
+    }
+
+    public Save saveState() throws IOException {
+        FileWriter saveState = new FileWriter("state.json");
+        ObjectMapper mapper=new ObjectMapper();
+        Save save = new Save();
+        save.setField(arr);
+        save.setGenValue(count);
+        String json=mapper.writeValueAsString(save);
+        saveState.write(json);
+        saveState.close();
+
+        return save;
     }
 
     // API - Application Programming Interface
@@ -52,7 +72,7 @@ public class LifeController {
      */
     @GetMapping(value = "/api/arr", produces = "application/json")
     @ResponseBody
-    public ArrayCell[][] getArr(@PathParam("move") boolean move) {
+    public Save getArr(@PathParam("move") boolean move) throws IOException {
         log.debug("Invoke, move = {}", move);
         if (move) {
             nextMove();
@@ -73,8 +93,7 @@ public class LifeController {
 
             }
         }
-
-        return arr;
+        return saveState();
     }
 
 
@@ -107,48 +126,41 @@ public class LifeController {
                 arr[i][j].setValue(0);
             }
         }
+        count=0;
     }
 
     public LifeController() throws IOException {
-        File f = new File("file1.txt");
+        File f = new File("state.json");
+        ObjectMapper mapper = new ObjectMapper();
         if (f.exists()) {
+
+            log.debug("file exists");
             FileReader fr = new FileReader(f);
             Scanner scan = new Scanner(fr);
-            String size = scan.nextLine();
-            String[] numbers = size.split(",");
-            String num1 = numbers[0];
-            String num2 = numbers[1];
-            int x = Integer.parseInt(num1);
-            int y = Integer.parseInt(num2);
-            arr = new ArrayCell[x][y];
-            nums = new ArrayCell[x][y];
+            String json = scan.nextLine();
+            //todo: restore state
+            Save restored = mapper.readValue(json, Save.class);
+            arr = restored.getField();
+            count=restored.getGenValue();
+            log.debug("gen value {}" , count);
+            nums = new ArrayCell[arr.length][arr[0].length];
             fr.close();
         } else {
             arr = new ArrayCell[5][5];
             nums = new ArrayCell[5][5];
-        }
-        for (int i = 0; i < arr.length; ++i) {
-            for (int j = 0; j < arr[0].length; ++j) {
-                arr[i][j] = new ArrayCell();
-                arr[i][j].setValue(0);
+            for (int i = 0; i < arr.length; ++i) {
+                for (int j = 0; j < arr[0].length; ++j) {
+                    arr[i][j] = new ArrayCell();
+                    arr[i][j].setValue(0);
+                }
             }
         }
+
+
     }
 
     @GetMapping("/page1")
     public String getPage1(Model model) {
-        for (ArrayCell[] arrayCells : arr) {
-            for (ArrayCell arrayCell : arrayCells) {
-                if (arrayCell.getValue() == 0) {
-                    arrayCell.setStyle("background-color:white; color:white");
-
-                } else {
-                    arrayCell.setStyle("background-color:green; color:green");
-
-                }
-
-            }
-        }
         model.addAttribute("x", turnLeft());
         model.addAttribute("autoPlay", autoPlay);
         System.out.println(autoPlay);
@@ -162,6 +174,7 @@ public class LifeController {
                 nums[x][y].setValue(0);
             }
         }
+        count++;
 
         for (int x = 0; x < nums.length; ++x) {
             for (int y = 0; y < nums[0].length; ++y) {

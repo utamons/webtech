@@ -1,8 +1,22 @@
 package com.kate.model;
 
 public class Save {
-    private String color="";
+    private ArrayCell[][] field;
     private int genValue;
-    private int dimensions[]=new int[2];
 
+    public ArrayCell[][] getField() {
+        return field;
+    }
+
+    public void setField(ArrayCell[][] field) {
+        this.field = field;
+    }
+
+    public int getGenValue() {
+        return genValue;
+    }
+
+    public void setGenValue(int genValue) {
+        this.genValue = genValue;
+    }
 }
