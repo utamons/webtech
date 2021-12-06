@@ -13,6 +13,7 @@ import java.io.IOException;
 public class TetrisController {
     private ArrayCell[][] arr;
     private ArrayCell[][] nums;
+    private ArrayCell[][] square;
 
     @GetMapping("/page2")
     public String getPage2(Model model) {
@@ -22,10 +23,17 @@ public class TetrisController {
     public TetrisController(){
         arr = new ArrayCell[10][15];
         nums = new ArrayCell[arr.length][arr[0].length];
+        square = new ArrayCell[4][4];
         for (int y = 0; y < arr.length; ++y) {
             for (int x = 0; x < arr[0].length; ++x) {
                 arr[y][x] = new ArrayCell();
                 arr[y][x].setValue(0);
+            }
+        }
+        for (int y = 0; y < square.length; ++y) {
+            for (int x = 0; x < square[0].length; ++x) {
+                square[y][x] = new ArrayCell();
+                square[y][x].setValue(1);
             }
         }
         arr[0][0].setValue(1);
@@ -53,6 +61,7 @@ public class TetrisController {
                 }
             }
         }
+        draw(5,5);
         return arr;
     }
 
@@ -81,6 +90,17 @@ public class TetrisController {
         }
     }
 
+    public void draw(int x,int y){
+        for(int i=0;i< arr.length;i++){
+            for(int j=0;j<arr[0].length;j++){
+                if(arr[i][j].getValue()==1){
+                    if (i < arr.length - 1)
+                        arr[y][x].setValue(square[i][j].getValue());
+                }
+
+            }
+        }
+    }
 
 
 
