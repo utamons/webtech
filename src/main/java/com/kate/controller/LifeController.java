@@ -93,6 +93,8 @@ public class LifeController {
 
             }
         }
+        // TODO: 06.12.2021 probs a bug, turn left no work 
+        turnLeft();
         return saveState();
     }
 
@@ -160,10 +162,7 @@ public class LifeController {
     }
 
     @GetMapping("/page1")
-    public String getPage1(Model model) {
-        model.addAttribute("x", turnLeft());
-        model.addAttribute("autoPlay", autoPlay);
-        System.out.println(autoPlay);
+    public String getPage1() {
         return "life";
     }
 

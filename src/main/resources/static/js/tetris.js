@@ -1,13 +1,9 @@
 let playInterval;
-let x =0;
-let oldArr;
+let x = 0;
 
 function submitCoords(obj) {
     postCoord(obj.parentNode.rowIndex, obj.cellIndex);
 }
-
-
-
 
 function start() {
     playInterval = setInterval(() => loadArray(true), 300)
@@ -17,43 +13,17 @@ function stopPlay() {
     clearInterval(playInterval)
 }
 
-
 function load() {
     loadArray(false);
 }
 
-function compare(arr, oldArr) {
-    for (let i = 0; i < arr.length; i++) {
-        for (let j = 0; j < arr[0].length; j++) {
-            if (arr[i][j].value !== oldArr[i][j].value) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-
 function loadArray(play) {
-    fetch('http://localhost:8080/api/arr?move=' + play)
+    fetch('http://localhost:8080/api/tetrisarr?move=' + play)
         .then(response => response.json())
         .then(arr => {
+
             renderArray(arr)
-
-            if (play) {
-                const equals = compare(arr, oldArr);
-                console.log('equals равно ', equals)
-                if (equals) {
-                    stopPlay()
-                    console.log('stopped playing')
-                } else {
-                    genCount()
-                }
-            }
-            oldArr = Array.from(arr)
-
         });
-
 }
 
 function renderArray(arr) {
