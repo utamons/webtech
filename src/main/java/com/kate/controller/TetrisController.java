@@ -23,7 +23,7 @@ public class TetrisController {
     public TetrisController(){
         arr = new ArrayCell[10][15];
         nums = new ArrayCell[arr.length][arr[0].length];
-        square = new ArrayCell[4][4];
+        square = new ArrayCell[2][2];
         for (int y = 0; y < arr.length; ++y) {
             for (int x = 0; x < arr[0].length; ++x) {
                 arr[y][x] = new ArrayCell();
@@ -34,14 +34,11 @@ public class TetrisController {
             for (int x = 0; x < square[0].length; ++x) {
                 square[y][x] = new ArrayCell();
                 square[y][x].setValue(1);
+                square[y][x].setStyle("background-color: green; color:green");
             }
         }
-        arr[0][0].setValue(1);
-        //  arr[0][1].setStyle("background-color: green; color:green");
-        arr[0][1].setValue(1);
-        //   arr[1][1].setStyle("background-color: green; color:green");
-        arr[0][2].setValue(1);
-        //   arr[2][1].setStyle("background-color: green; color:green");
+        square[1][1].setStyle("background-color:white; color:white");
+        square[1][1].setValue(0);
     }
 
     @GetMapping(value = "/api/tetrisarr", produces = "application/json")
@@ -61,7 +58,7 @@ public class TetrisController {
                 }
             }
         }
-        draw(5,5);
+        draw(2,2);
         return arr;
     }
 
@@ -90,19 +87,23 @@ public class TetrisController {
         }
     }
 
-    public void draw(int x,int y){
-        for(int i=0;i< arr.length;i++){
-            for(int j=0;j<arr[0].length;j++){
-                if(arr[i][j].getValue()==1){
-                    if (i < arr.length - 1)
-                        arr[y][x].setValue(square[i][j].getValue());
+    public void draw(int x,int y) {
+       for (int i = 0; i < square.length; i++) {
+            for (int j = 0; j < square[0].length; j++) {
+                if (x < arr.length && y < arr[0].length) {
+                        arr[x+i][y+j].setValue(square[i][j].getValue());
+                        arr[x+i][y+j].setStyle(square[i][j].getStyle());
                 }
-
             }
         }
+      /*  arr[x][y].setValue(1);
+        arr[x][y].setStyle("background-color: green; color:green");
+        arr[x+1][y].setValue(1);
+        arr[x+1][y].setStyle("background-color: green; color:green");
+        arr[x][y+1].setValue(1);
+        arr[x][y+1].setStyle("background-color: green; color:green");
+        arr[x+1][y+1].setValue(1);
+        arr[x+1][y+1].setStyle("background-color: green; color:green");*/
     }
-
-
-
 }
 
