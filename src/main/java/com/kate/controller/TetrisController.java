@@ -12,8 +12,9 @@ import java.io.IOException;
 @Controller
 public class TetrisController {
     private ArrayCell[][] arr;
-    private ArrayCell[][] nums;
     private ArrayCell[][] square;
+    private int x=0;
+    private int y=0;
 
     @GetMapping("/page2")
     public String getPage2(Model model) {
@@ -21,8 +22,8 @@ public class TetrisController {
     }
 
     public TetrisController(){
-        arr = new ArrayCell[10][15];
-        nums = new ArrayCell[arr.length][arr[0].length];
+        arr = new ArrayCell[10][10];
+
         square = new ArrayCell[2][2];
         for (int y = 0; y < arr.length; ++y) {
             for (int x = 0; x < arr[0].length; ++x) {
@@ -37,8 +38,6 @@ public class TetrisController {
                 square[y][x].setStyle("background-color: green; color:green");
             }
         }
-        square[1][1].setStyle("background-color:white; color:white");
-        square[1][1].setValue(0);
     }
 
     @GetMapping(value = "/api/tetrisarr", produces = "application/json")
@@ -48,6 +47,7 @@ public class TetrisController {
             nextMove();
         }
       //  move();
+
         for (ArrayCell[] arrayCells : arr) {
             for (int x = 0; x < arr[0].length; ++x) {
                 if (arrayCells[x].getValue() == 0) {
@@ -58,33 +58,23 @@ public class TetrisController {
                 }
             }
         }
-        draw(2,2);
+   //
+
+
         return arr;
     }
-
     public void nextMove(){
-        for (int x = 0; x < nums.length; ++x) {
-            for (int y = 0; y < nums[0].length; ++y) {
-                nums[x][y] = new ArrayCell();
-                nums[x][y].setValue(0);
+        for (int x = 0; x < arr.length; ++x) {
+            for (int y = 0; y < arr[0].length; ++y) {
+                arr[x][y] = new ArrayCell();
+               arr[x][y].setValue(0);
             }
+        }
+        draw(x,y);
+        if(x< arr.length- square.length){
+            x++;
         }
 
-        for(int y=0;y< arr.length;y++){
-            for(int x=0;x<arr[0].length;x++){
-                if(arr[y][x].getValue()==1) {
-                    if (y < arr.length - 1) {
-                        nums[y + 1][x].setValue(1);
-                        nums[y][x].setValue(0);
-                    }else{
-                        nums[y][x].setValue(1);
-                    }
-                }
-            }
-        }
-        for (int x = 0; x < arr.length; ++x) {
-            System.arraycopy(nums[x], 0, arr[x], 0, arr[0].length);
-        }
     }
 
     public void draw(int x,int y) {
@@ -96,14 +86,6 @@ public class TetrisController {
                 }
             }
         }
-      /*  arr[x][y].setValue(1);
-        arr[x][y].setStyle("background-color: green; color:green");
-        arr[x+1][y].setValue(1);
-        arr[x+1][y].setStyle("background-color: green; color:green");
-        arr[x][y+1].setValue(1);
-        arr[x][y+1].setStyle("background-color: green; color:green");
-        arr[x+1][y+1].setValue(1);
-        arr[x+1][y+1].setStyle("background-color: green; color:green");*/
     }
 }
 
