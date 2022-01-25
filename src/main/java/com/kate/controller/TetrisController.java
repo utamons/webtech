@@ -27,7 +27,28 @@ public class TetrisController {
             gameplay.nextMove();
         }
 
-        return arr;
+        return turnLeft(arr);
+    }
+    @GetMapping("/api/left")
+    @ResponseBody
+    public void left(){
+        gameplay.left();
+    }
+
+    @GetMapping("/api/right")
+    @ResponseBody
+    public void right(){
+        gameplay.right();
+    }
+
+    public ArrayCell[][] turnLeft(ArrayCell[][] arr) {
+        ArrayCell[][] left = new ArrayCell[arr[0].length][arr.length];
+        for (int x = 0; x < arr[0].length; ++x) {
+            for (int y = 0; y < arr.length; ++y) {
+                left[x][y] = arr[y][x];
+            }
+        }
+        return left;
     }
 
 }

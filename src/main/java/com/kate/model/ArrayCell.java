@@ -19,4 +19,11 @@ public class ArrayCell {
     public void setStyle(String style) {
         this.style = style;
     }
+
+    public ArrayCell copy(){
+        ArrayCell copy=new ArrayCell();
+        copy.setValue(this.value);
+        copy.setStyle(this.style);
+        return copy;
+    }
 }

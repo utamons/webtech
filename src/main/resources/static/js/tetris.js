@@ -17,6 +17,24 @@ function load() {
     loadArray(false);
 }
 
+function left(){
+    fetch('http://localhost:8080/api/left').then()
+
+}
+
+function right(){
+    fetch('http://localhost:8080/api/right').then()
+}
+
+function keyPress(event){
+    if(event.key==='ArrowLeft'){
+        left();
+    }
+    if(event.key==='ArrowRight'){
+        right();
+    }
+}
+
 function loadArray(play) {
     fetch('http://localhost:8080/api/tetrisarr?move=' + play)
         .then(response => response.json())

@@ -4,16 +4,44 @@ import com.kate.model.ArrayCell;
 
 public class Gameplay {
     private final Field field = new Field();
+    private Shape currentShape;
+    private int currentX;
+    private int currentY;
+
+    public Gameplay(){
+        Square square = new Square();
+        currentShape=new J();
+        L l = new L();
+        S s = new S();
+        Z z = new Z();
+        T t = new T();
+        Stick stick = new Stick();
+        currentX=3;
+        currentY=0;
+        field.putShape(currentShape, currentX, currentY);
+    }
 
     public ArrayCell[][] getField() {
         return field.getArr();
     }
 
-    public void reset(){
+    public void reset() {
 
     }
-    public void nextMove(){
 
+    public void nextMove() {
+        ArrayCell[][] shapeArr= currentShape.getShapeArr();
+        ArrayCell[][] fieldArr= field.getArr();
+        field.putShape(currentShape,currentX,currentY);
+        currentY++;
+    }
+
+    public void left() {
+        field.left();
+    }
+
+    public void right() {
+        field.right();
     }
     /*public void nextMove(){
         for (int x = 0; x < arr.length; ++x) {
