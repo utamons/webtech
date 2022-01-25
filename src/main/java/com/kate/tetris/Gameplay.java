@@ -21,6 +21,7 @@ public class Gameplay {
         field.putShape(currentShape, currentX, currentY);
     }
 
+    //Displays the field according to the "getArr" function of Field
     public ArrayCell[][] getField() {
         return field.getArr();
     }
@@ -29,6 +30,7 @@ public class Gameplay {
 
     }
 
+    //Sends the shape down by one square
     public void nextMove() {
         ArrayCell[][] shapeArr= currentShape.getShapeArr();
         ArrayCell[][] fieldArr= field.getArr();
@@ -36,10 +38,12 @@ public class Gameplay {
         currentY++;
     }
 
+    //Calls the "left" function of Shape
     public void left() {
         field.left();
     }
 
+    //Calls the "right" function of Shape
     public void right() {
         field.right();
     }

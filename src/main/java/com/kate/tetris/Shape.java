@@ -21,6 +21,7 @@ public abstract class Shape {
         }
     }
 
+    //Turns the shape to the right
     public void right(){
         final int tempHeight=arrWidth;
         final int tempWidth=arrHeight;
@@ -34,6 +35,7 @@ public abstract class Shape {
         arrWidth=tempWidth;
         arrHeight=tempHeight;
     }
+    //Turns the shape to the left
     public void left(){
         final int tempHeight=arrWidth;
         final int tempWidth=arrHeight;

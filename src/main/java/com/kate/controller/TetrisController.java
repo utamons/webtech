@@ -13,12 +13,14 @@ public class TetrisController {
     private final Gameplay gameplay=new Gameplay();
 
 
+    //Displays the page 2 as tetris page
     @GetMapping("/page2")
     public String getPage2() {
         return "tetris";
     }
 
 
+    //Displays tetris field on the page
     @GetMapping(value = "/api/tetrisarr", produces = "application/json")
     @ResponseBody
     public ArrayCell[][] getArr(@PathParam("move") boolean move) {
@@ -29,12 +31,15 @@ public class TetrisController {
 
         return turnLeft(arr);
     }
+
+    //Calls the "left" function from Shape
     @GetMapping("/api/left")
     @ResponseBody
     public void left(){
         gameplay.left();
     }
 
+    //Calls the "right" function from Shape
     @GetMapping("/api/right")
     @ResponseBody
     public void right(){

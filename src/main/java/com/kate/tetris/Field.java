@@ -7,6 +7,7 @@ public class Field {
     private Shape shape;
     private int x, y;
 
+    //Creates the field
     public Field() {
         arr = new ArrayCell[10][10];
         for (int i = 0; i < arr.length; i++) {
@@ -23,6 +24,7 @@ public class Field {
         return true;
     }
 
+    //Draws the shape on the field
     private void draw(int x, int y, ArrayCell[][] clone) {
         ArrayCell[][] shapeArr = shape.getShapeArr();
         for (int i = 0; i < shapeArr.length; i++) {
@@ -36,8 +38,8 @@ public class Field {
         }
     }
 
+    //Fills the field with white or colored cells according to whether or not a shape is present
     public ArrayCell[][] getArr() {
-
         for (ArrayCell[] arrayCells : arr) {
             for (int x = 0; x < arr[0].length; ++x) {
                 if (arrayCells[x].getValue() == 0) {
@@ -64,10 +66,12 @@ public class Field {
         return arr;
     }
 
+    //Calls the "left" function of Shape
     public void left() {
         shape.left();
     }
 
+    //Calls the "right" function of Shape
     public void right() {
         shape.right();
     }
