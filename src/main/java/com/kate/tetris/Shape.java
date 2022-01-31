@@ -22,7 +22,7 @@ public abstract class Shape {
     }
 
     //Turns the shape to the right
-    public void right(){
+    public void turnRight(){
         final int tempHeight=arrWidth;
         final int tempWidth=arrHeight;
         ArrayCell[][] temp = new ArrayCell[tempHeight][tempWidth];
@@ -30,13 +30,14 @@ public abstract class Shape {
             for (int x = 0; x < tempWidth; x++) {
                 temp[y][x] = shapeArr[arrHeight - x - 1][y];
             }
+
         }
         shapeArr=temp;
         arrWidth=tempWidth;
         arrHeight=tempHeight;
     }
     //Turns the shape to the left
-    public void left(){
+    public void turnLeft(){
         final int tempHeight=arrWidth;
         final int tempWidth=arrHeight;
         ArrayCell[][] temp = new ArrayCell[tempHeight][tempWidth];
@@ -49,6 +50,10 @@ public abstract class Shape {
         shapeArr=temp;
         arrWidth=shapeArr[0].length;
         arrHeight=shapeArr.length;
+    }
+
+    public int getArrHeight() {
+        return arrHeight;
     }
 
     public ArrayCell[][] getShapeArr() {

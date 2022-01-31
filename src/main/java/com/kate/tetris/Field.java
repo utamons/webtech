@@ -67,12 +67,12 @@ public class Field {
     }
 
     //Calls the "left" function of Shape
-    public void left() {
-        shape.left();
+    public void turnLeft() {
+        shape.turnLeft();
     }
 
     //Calls the "right" function of Shape
-    public void right() {
-        shape.right();
+    public void turnRight() {
+        shape.turnRight();
     }
 }

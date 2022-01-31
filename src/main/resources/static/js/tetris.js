@@ -17,21 +17,28 @@ function load() {
     loadArray(false);
 }
 
-function left(){
-    fetch('http://localhost:8080/api/left').then()
+function turnLeft(){
+    fetch('http://localhost:8080/api/turnleft').then()
 
 }
 
-function right(){
-    fetch('http://localhost:8080/api/right').then()
+function turnRight(){
+    fetch('http://localhost:8080/api/turnright').then()
 }
 
 function keyPress(event){
+    if(event.key==='ArrowUp'){
+        turnLeft();
+    }
+    if(event.key==='ArrowDown'){
+        turnRight();
+    }
+
     if(event.key==='ArrowLeft'){
-        left();
+        moveLeft();
     }
     if(event.key==='ArrowRight'){
-        right();
+        moveRight();
     }
 }
 
