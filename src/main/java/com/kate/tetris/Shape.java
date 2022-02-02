@@ -1,12 +1,15 @@
 package com.kate.tetris;
 
+import com.kate.controller.LifeController;
 import com.kate.model.ArrayCell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Shape {
     protected ArrayCell[][] shapeArr;
     protected int arrHeight;
     protected int arrWidth;
-
+    private static final Logger log = LoggerFactory.getLogger(LifeController.class);
     public void print(){
         for (int y = 0; y < shapeArr.length; ++y) {
             for (int x = 0; x < shapeArr[0].length; ++x) {
@@ -52,8 +55,16 @@ public abstract class Shape {
         arrHeight=shapeArr.length;
     }
 
+
+
+
+
     public int getArrHeight() {
         return arrHeight;
+    }
+
+    public int getArrWidth() {
+        return arrWidth;
     }
 
     public ArrayCell[][] getShapeArr() {

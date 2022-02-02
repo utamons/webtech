@@ -26,6 +26,13 @@ function turnRight(){
     fetch('http://localhost:8080/api/turnright').then()
 }
 
+function moveLeft(){
+    fetch('http://localhost:8080/api/moveleft').then()
+}
+function moveRight(){
+    fetch('http://localhost:8080/api/moveright').then()
+}
+
 function keyPress(event){
     if(event.key==='ArrowUp'){
         turnLeft();

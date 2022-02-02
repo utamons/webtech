@@ -72,7 +72,7 @@ public class Field {
     }
 
     //Calls the "right" function of Shape
-    public void turnRight() {
-        shape.turnRight();
-    }
+    public void turnRight() { shape.turnRight();}
+
+
 }

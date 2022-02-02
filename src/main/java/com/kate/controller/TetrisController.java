@@ -35,16 +35,30 @@ public class TetrisController {
     //Calls the "left" function from Shape
     @GetMapping("/api/turnleft")
     @ResponseBody
-    public void left(){
+    public void turnLeft(){
         gameplay.turnLeft();
     }
 
     //Calls the "right" function from Shape
     @GetMapping("/api/turnright")
     @ResponseBody
-    public void right(){
+    public void turnRight(){
         gameplay.turnRight();
     }
+
+    @GetMapping("/api/moveleft")
+    @ResponseBody
+    public void moveLeft(){
+        gameplay.moveLeft();
+    }
+
+    //Calls the "right" function from Shape
+    @GetMapping("/api/moveright")
+    @ResponseBody
+    public void moveRight(){
+        gameplay.moveRight();
+    }
+
 
     public ArrayCell[][] turnLeft(ArrayCell[][] arr) {
         ArrayCell[][] left = new ArrayCell[arr[0].length][arr.length];

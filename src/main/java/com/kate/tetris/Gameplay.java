@@ -10,7 +10,7 @@ public class Gameplay {
 
     public Gameplay(){
         Square square = new Square();
-        currentShape=new S();
+        currentShape=new T();
         L l = new L();
         S s = new S();
         Z z = new Z();
@@ -35,7 +35,7 @@ public class Gameplay {
         ArrayCell[][] shapeArr= currentShape.getShapeArr();
         ArrayCell[][] fieldArr= field.getArr();
         field.putShape(currentShape,currentX,currentY);
-        if(currentY+ currentShape.getArrHeight()<9){
+        if(currentY+ currentShape.getArrWidth()<10){
             currentY++;
         }
     }
@@ -51,6 +51,18 @@ public class Gameplay {
     public void turnRight() {
         field.turnRight();
     }
+
+    public void moveLeft(){
+        if(currentX>0) {
+            currentX--;
+        }
+    }
+    public void moveRight(){
+        if(currentX+ currentShape.getArrHeight()<10) {
+            currentX++;
+        }
+    }
+
     /*public void nextMove(){
         for (int x = 0; x < arr.length; ++x) {
             for (int y = 0; y < arr[0].length; ++y) {
