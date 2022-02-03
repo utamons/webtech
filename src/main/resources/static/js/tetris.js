@@ -6,6 +6,7 @@ function submitCoords(obj) {
 }
 
 function start() {
+    loadArray(false);
     playInterval = setInterval(() => loadArray(true), 300)
 }
 

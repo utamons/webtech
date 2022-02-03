@@ -34,11 +34,19 @@ public class Gameplay {
     public void nextMove() {
         ArrayCell[][] shapeArr= currentShape.getShapeArr();
         ArrayCell[][] fieldArr= field.getArr();
-        field.putShape(currentShape,currentX,currentY);
         if(currentY+ currentShape.getArrWidth()<10){
+            field.putShape(currentShape,currentX,currentY);
             currentY++;
+        }else{
+            field.clearShape();
+            field.adopt(currentY,currentX,currentShape);
         }
     }
+
+    public void nextShape(){
+
+    }
+
 
 
 

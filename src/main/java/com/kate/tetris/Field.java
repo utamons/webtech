@@ -45,7 +45,7 @@ public class Field {
                 if (arrayCells[x].getValue() == 0) {
                     arrayCells[x].setStyle("background-color:white; color:white");
                 } else {
-                    arrayCells[x].setStyle("background-color: green; color:green");
+                    arrayCells[x].setStyle("background-color: brown; color:brown");
                 }
             }
         }
@@ -74,5 +74,37 @@ public class Field {
     //Calls the "right" function of Shape
     public void turnRight() { shape.turnRight();}
 
+    public void adopt(int x, int y, Shape shape){
+        for (int shapeY = 0; shapeY < shape.shapeArr.length; ++shapeY) {
+            for (int shapeX = 0; shapeX < shape.shapeArr[0].length; ++shapeX) {
+                if(shape.shapeArr[shapeY][shapeX].getValue()==1){
+                    int arrY, arrX;
+                    arrY=shapeY+y;
+                    arrX=shapeX+x;
+                    arr[arrY][arrX].setValue(1);
+                }
 
-}
+            }
+        }
+    }
+
+    public void clearShape(){
+        shape=null;
+    }
+
+    public boolean isCollision(int x, int y, Shape shape){
+
+            for (int shapeY = 0; shapeY < shape.shapeArr.length; ++shapeY) {
+                for (int shapeX = 0; shapeX < shape.shapeArr[0].length; ++shapeX) {
+                    if(arr[shapeY+y][shapeX+x].getValue()==1){
+                         return true;
+                    }
+                }
+            }
+           return false;
+        }
+
+        }
+
+
+
