@@ -1,11 +1,14 @@
 package com.kate.tetris;
 
 import com.kate.model.ArrayCell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Field {
     private final ArrayCell[][] arr;
     private Shape shape;
     private int x, y;
+    private static final Logger log = LoggerFactory.getLogger(Field.class);
 
     //Creates the field
     public Field() {
@@ -75,6 +78,7 @@ public class Field {
     public void turnRight() { shape.turnRight();}
 
     public void adopt(int x, int y, Shape shape){
+        log.debug("Start");
         for (int shapeY = 0; shapeY < shape.shapeArr.length; ++shapeY) {
             for (int shapeX = 0; shapeX < shape.shapeArr[0].length; ++shapeX) {
                 if(shape.shapeArr[shapeY][shapeX].getValue()==1){
@@ -86,9 +90,11 @@ public class Field {
 
             }
         }
+        log.debug("Finish");
     }
 
     public void clearShape(){
+        log.debug("Invoke");
         shape=null;
     }
 
