@@ -1,9 +1,7 @@
+// noinspection DuplicatedCode
+
 let playInterval;
 let x = 0;
-
-function submitCoords(obj) {
-    postCoord(obj.parentNode.rowIndex, obj.cellIndex);
-}
 
 function start() {
     loadArray(false);
@@ -54,16 +52,14 @@ function loadArray(play) {
     fetch('http://localhost:8080/api/tetrisarr?move=' + play)
         .then(response => response.json())
         .then(arr => {
-
             renderArray(arr)
         });
 }
 
 function renderArray(arr) {
-
     const table = document.getElementById('playGround')
     table.innerHTML = ''
-    for (let y = 0; y < arr.length; ++y) {
+    for (let x = 0; x < arr.length; ++y) {
         const tr = document.createElement('tr');
         for (let x = 0; x < arr[0].length; ++x) {
             const td = document.createElement('td')
@@ -74,23 +70,4 @@ function renderArray(arr) {
         }
         table.appendChild(tr);
     }
-
 }
-
-function postCoord(x, y) {
-    const coord = {
-        x: x,
-        y: y
-    }
-    const options = {
-        method: 'POST',
-        body: JSON.stringify(coord),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }
-    fetch('http://localhost:8080/api/coord', options)
-        .then(res => res.json())
-        .then(() => loadArray(false));
-}
-
