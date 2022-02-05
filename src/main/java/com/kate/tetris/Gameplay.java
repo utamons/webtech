@@ -7,25 +7,15 @@ import org.slf4j.LoggerFactory;
 import java.util.Random;
 
 public class Gameplay {
-    private final Field field = new Field();
+    private final Field field = new Field(10, 10);
     private Shape currentShape;
     private int currentX;
     private int currentY;
-    private Random random=new Random();
+    private final Random random = new Random();
     private static final Logger log = LoggerFactory.getLogger(Gameplay.class);
 
-    public Gameplay(){
-        Square square = new Square();
-        currentShape=new T();
-        L l = new L();
-        S s = new S();
-        Z z = new Z();
-        T t = new T();
-        J j=new J();
-        Stick stick = new Stick();
-        currentX=3;
-        currentY=0;
-        field.putShape(currentShape, currentX, currentY);
+    public Gameplay() {
+        nextShape();
     }
 
     //Displays the field according to the "getArr" function of Field
@@ -33,39 +23,37 @@ public class Gameplay {
         return field.getArr();
     }
 
-    public void reset() {
-
-    }
-
     //Sends the shape down by one square
     public void nextMove() {
-        log.debug("Start, currentY={}",currentY);
-        if(!field.isCollision(currentY, currentX, currentShape) && (currentY+ currentShape.getArrWidth()<10)){
-            field.putShape(currentShape,currentX,currentY);
+        log.debug("Start, currentX={}, currentY={}, shape width={},height={}", currentX, currentY, currentShape.getWidth(), currentShape.getHeight());
+        if ((currentY + currentShape.getHeight() <= field.getHeight()) && !field.isCollision(currentX, currentY, currentShape)) {
+            field.putShape(currentShape, currentX, currentY);
             currentY++;
-        }else{
+        } else {
+            if (currentY == 0)
+                return; // the end of the game?
             field.clearShape();
-            field.adopt(currentY,currentX,currentShape);
+            field.adopt(currentX, currentY - 1, currentShape);
             nextShape();
         }
-        log.debug("Finish, currentY={}",currentY);
+        log.debug("Finish, currentY={}", currentY);
     }
 
-    public void nextShape(){
+    public void nextShape() {
         log.debug("Start");
-        currentX=0;
-        currentY=3;
+        currentX = 3;
+        currentY = 0;
         Shape[] shapeArr = new Shape[7];
-        shapeArr[0]=new J();
-        shapeArr[1]=new L();
-        shapeArr[2]=new S();
-        shapeArr[3]=new Z();
-        shapeArr[4]=new T();
-        shapeArr[5]=new Stick();
-        shapeArr[6]=new Square();
+        shapeArr[0] = new J();
+        shapeArr[1] = new L();
+        shapeArr[2] = new S();
+        shapeArr[3] = new Z();
+        shapeArr[4] = new T();
+        shapeArr[5] = new Stick();
+        shapeArr[6] = new Square();
         int n = random.nextInt(shapeArr.length);
-        field.putShape(shapeArr[n],currentX,currentY);
-        currentShape=shapeArr[n];
+        field.putShape(shapeArr[n], currentX, currentY);
+        currentShape = shapeArr[n];
         log.debug("Finish");
     }
 
@@ -79,13 +67,14 @@ public class Gameplay {
         field.turnRight();
     }
 
-    public void moveLeft(){
-        if(currentX>0) {
+    public void moveLeft() {
+        if (currentX > 0) {
             currentX--;
         }
     }
-    public void moveRight(){
-        if(currentX+ currentShape.getArrHeight()<10) {
+
+    public void moveRight() {
+        if (currentX + currentShape.getWidth() < field.getWidth()) {
             currentX++;
         }
     }

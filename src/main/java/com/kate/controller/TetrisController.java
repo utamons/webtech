@@ -28,8 +28,7 @@ public class TetrisController {
         if (move) {
             gameplay.nextMove();
         }
-
-        return turnLeft(arr);
+        return arr;
     }
 
     //Calls the "left" function from Shape

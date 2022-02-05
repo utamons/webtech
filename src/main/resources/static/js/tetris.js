@@ -59,13 +59,13 @@ function loadArray(play) {
 function renderArray(arr) {
     const table = document.getElementById('playGround')
     table.innerHTML = ''
-    for (let x = 0; x < arr.length; ++y) {
+    for (let  y = 0; y < arr[0].length; ++y) {
         const tr = document.createElement('tr');
-        for (let x = 0; x < arr[0].length; ++x) {
+        for (let x = 0; x < arr.length; ++x) {
             const td = document.createElement('td')
             td.setAttribute('onclick', 'submitCoords(this);');
-            td.setAttribute('style', arr[y][x].style);
-            td.innerText = arr[y][x].value;
+            td.setAttribute('style', arr[x][y].style);
+            td.innerText = arr[x][y].value;
             tr.appendChild(td);
         }
         table.appendChild(tr);

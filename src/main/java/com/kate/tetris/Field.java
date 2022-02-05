@@ -11,59 +11,83 @@ public class Field {
     private static final Logger log = LoggerFactory.getLogger(Field.class);
 
     //Creates the field
-    public Field() {
-        arr = new ArrayCell[10][10];
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr.length; j++) {
-                arr[i][j] = new ArrayCell();
+    public Field(int width, int height) {
+        arr = new ArrayCell[width][height];
+        clear();
+    }
+
+    private void clear() {
+        for (int y = 0; y < getHeight(); y++) {
+            for (int x = 0; x < getWidth(); x++) {
+                arr[x][y] = new ArrayCell();
             }
         }
     }
 
-    public boolean putShape(Shape shape, int x, int y) {
+    @SuppressWarnings("ForLoopReplaceableByForEach")
+    public static void print(ArrayCell[][] arr) {
+        for (int y = 0; y < arr[0].length; y++) {
+            for (int x = 0; x < arr.length; x++) {
+                if (arr[x][y] == null) {
+                    System.out.print("N");
+                } else {
+                    System.out.print(arr[x][y].getValue());
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public void putShape(Shape shape, int x, int y) {
         this.shape = shape;
         this.x = x;
         this.y = y;
-        return true;
     }
 
     //Draws the shape on the field
-    private void draw(int x, int y, ArrayCell[][] clone) {
+    private void draw(int x, int y, ArrayCell[][] field) {
         ArrayCell[][] shapeArr = shape.getShapeArr();
-        for (int i = 0; i < shapeArr.length; i++) {
-            for (int j = 0; j < shapeArr[0].length; j++) {
-                if (x < clone.length && y < clone[0].length) {
-                    clone[x + i][y + j].setValue(shapeArr[i][j].getValue());
-                    clone[x + i][y + j].setStyle(shapeArr[i][j].getStyle());
+        for (int shapeY = 0; shapeY < shape.getHeight(); shapeY++) {
+            for (int shapeX = 0; shapeX < shape.getWidth(); shapeX++) {
+                if (x < getWidth() && y < getHeight()) {
+                    ArrayCell fieldCell = field[x + shapeX][y + shapeY];
+                    ArrayCell shapeCell = shapeArr[shapeX][shapeY];
+                    if (shapeCell == null) {
+                        log.error("ShapeCell at {},{} is null", shapeX, shapeY);
+                    }
+                    if (fieldCell == null) {
+                        log.error("fieldCell at {},{} is null", x + shapeX, y + shapeY);
+                    }
+                    fieldCell.setValue(shapeCell.getValue());
+                    fieldCell.setStyle(shapeCell.getStyle());
                 }
             }
-
         }
     }
 
     //Fills the field with white or colored cells according to whether or not a shape is present
     public ArrayCell[][] getArr() {
-        for (ArrayCell[] arrayCells : arr) {
-            for (int x = 0; x < arr[0].length; ++x) {
-                if (arrayCells[x].getValue() == 0) {
-                    arrayCells[x].setStyle("background-color:white; color:white");
+        for (int y = 0; y < getHeight(); y++) {
+            for (int x = 0; x < getWidth(); x++) {
+                if (arr[x][y].getValue() == 0) {
+                    arr[x][y].setStyle("background-color:white; color:white");
                 } else {
-                    arrayCells[x].setStyle("background-color: brown; color:brown");
+                    arr[x][y].setStyle("background-color: brown; color:brown");
                 }
             }
         }
         if (shape != null) {
             //todo клонировать массив (погуглить как создать копию массива)
-            ArrayCell[][] clone = new ArrayCell[arr.length][arr[0].length];
-            for (int i = 0; i < arr.length; i++) {
-                for (int j = 0; j < arr[0].length; j++) {
-                    clone[i][j] = arr[i][j].copy();
+            ArrayCell[][] fieldClone = new ArrayCell[getWidth()][getHeight()];
+            for (int y = 0; y < getHeight(); y++) {
+                for (int x = 0; x < getWidth(); x++) {
+                    fieldClone[x][y] = arr[x][y].copy();
                 }
             }
             //todo отобразить shape в клон
-            draw(x, y, clone);
+            draw(x, y, fieldClone);
             //todo вернуть клон
-            return clone;
+            return fieldClone;
         }
 
         return arr;
@@ -75,17 +99,19 @@ public class Field {
     }
 
     //Calls the "right" function of Shape
-    public void turnRight() { shape.turnRight();}
+    public void turnRight() {
+        shape.turnRight();
+    }
 
-    public void adopt(int x, int y, Shape shape){
+    public void adopt(int x, int y, Shape shape) {
         log.debug("Start");
-        for (int shapeY = 0; shapeY < shape.shapeArr.length; ++shapeY) {
-            for (int shapeX = 0; shapeX < shape.shapeArr[0].length; ++shapeX) {
-                if(shape.shapeArr[shapeY][shapeX].getValue()==1){
+        for (int shapeY = 0; shapeY < shape.shapeArr[0].length; ++shapeY) {
+            for (int shapeX = 0; shapeX < shape.shapeArr.length; ++shapeX) {
+                if (shape.shapeArr[shapeX][shapeY].getValue() == 1) {
                     int arrY, arrX;
-                    arrY=shapeY+y;
-                    arrX=shapeX+x;
-                    arr[arrY][arrX].setValue(1);
+                    arrY = shapeY + y;
+                    arrX = shapeX + x;
+                    arr[arrX][arrY].setValue(1);
                 }
 
             }
@@ -93,24 +119,32 @@ public class Field {
         log.debug("Finish");
     }
 
-    public void clearShape(){
+    public void clearShape() {
         log.debug("Invoke");
-        shape=null;
+        shape = null;
     }
 
-    public boolean isCollision(int x, int y, Shape shape){
-
-            for (int shapeY = 0; shapeY < shape.shapeArr.length; ++shapeY) {
-                for (int shapeX = 0; shapeX < shape.shapeArr[0].length; ++shapeX) {
-                    if(arr[shapeY+y][shapeX+x].getValue()==1){
-                         return true;
-                    }
+    public boolean isCollision(int x, int y, Shape shape) {
+        log.debug("Start");
+        ArrayCell[][] shapeArr = shape.getShapeArr();
+        for (int shapeY = 0; shapeY < shape.getHeight(); ++shapeY) {
+            for (int shapeX = 0; shapeX < shape.getWidth(); ++shapeX) {
+                if (arr[shapeX + x][shapeY + y].getValue() == 1 && shapeArr[shapeX][shapeY].getValue() == 1) {
+                    return true;
                 }
             }
-           return false;
         }
+        return false;
+    }
 
-        }
+    public int getHeight() {
+        return arr[0].length;
+    }
+
+    public int getWidth() {
+        return arr.length;
+    }
+}
 
 
 
