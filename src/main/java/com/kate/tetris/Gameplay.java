@@ -34,17 +34,21 @@ public class Gameplay {
                 return; // the end of the game?
             field.clearShape();
             field.adopt(currentX, currentY - 1, currentShape);
-            nextShape();
+
+              //  nextShape();
+
+
         }
         log.debug("Finish, currentY={}", currentY);
     }
 
     public void nextShape() {
         log.debug("Start");
-        currentX = 3;
+        currentX = 0;
         currentY = 0;
-        Shape[] shapeArr = new Shape[7];
-        shapeArr[0] = new J();
+        Shape[] shapeArr = new Shape[1];
+        shapeArr[0] = new Test();
+        /*shapeArr[0] = new J();
         shapeArr[1] = new L();
         shapeArr[2] = new S();
         shapeArr[3] = new Z();
@@ -52,29 +56,38 @@ public class Gameplay {
         shapeArr[5] = new Stick();
         shapeArr[6] = new Square();
         int n = random.nextInt(shapeArr.length);
-        field.putShape(shapeArr[n], currentX, currentY);
-        currentShape = shapeArr[n];
+        field.putShape(shapeArr[n], currentX, currentY);*/
+        currentShape = shapeArr[0];
         log.debug("Finish");
     }
 
     //Calls the "left" function of Shape
     public void turnLeft() {
-        field.turnLeft();
+        if(!field.isCollision(currentX,currentY,currentShape)){
+            field.turnLeft();
+        }else{
+            field.turnRight();
+        }
+
     }
 
     //Calls the "right" function of Shape
     public void turnRight() {
-        field.turnRight();
+        if(!field.isCollision(currentX,currentY,currentShape)){
+            field.turnRight();
+        }else{
+            field.turnLeft();
+        }
     }
 
     public void moveLeft() {
-        if (currentX > 0) {
+        if (currentX > 0 && !field.isCollision(currentX,currentY,currentShape)) {
             currentX--;
         }
     }
 
     public void moveRight() {
-        if (currentX + currentShape.getWidth() < field.getWidth()) {
+        if (currentX + currentShape.getWidth() < field.getWidth() && !field.isCollision(currentX,currentY,currentShape)) {
             currentX++;
         }
     }

@@ -117,6 +117,7 @@ public class Field {
             }
         }
         log.debug("Finish");
+        fall();
     }
 
     public void clearShape() {
@@ -129,6 +130,7 @@ public class Field {
         ArrayCell[][] shapeArr = shape.getShapeArr();
         for (int shapeY = 0; shapeY < shape.getHeight(); ++shapeY) {
             for (int shapeX = 0; shapeX < shape.getWidth(); ++shapeX) {
+              //  log.debug("shapeX={},shapeY={},x={},y={}",shapeX,shapeY,x,y);
                 if (arr[shapeX + x][shapeY + y].getValue() == 1 && shapeArr[shapeX][shapeY].getValue() == 1) {
                     return true;
                 }
@@ -143,6 +145,25 @@ public class Field {
 
     public int getWidth() {
         return arr.length;
+    }
+
+    public void fall(){
+        log.debug("Start");
+
+        for(int y=getHeight();y>0;y--){
+            int rowCellCount=0;
+            for(int x=getWidth();x>0;x--){
+                if(arr[x][y].getValue()==1){
+                    rowCellCount++;
+                    // log.debug("rowCheck={}",rowCheck);
+                }
+            }
+            log.debug("rowCellCount={}",rowCellCount);
+            if(rowCellCount==getWidth()){
+                arr[x][y]=arr[x][y-1];
+            }
+        }
+        log.debug("Finish");
     }
 }
 
