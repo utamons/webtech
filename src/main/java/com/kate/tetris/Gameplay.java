@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Random;
 
 public class Gameplay {
-    private final Field field = new Field(10, 10);
+    private final Field field = new Field(9, 10);
     private Shape currentShape;
     private int currentX;
     private int currentY;
@@ -35,7 +35,7 @@ public class Gameplay {
             field.clearShape();
             field.adopt(currentX, currentY - 1, currentShape);
 
-              //  nextShape();
+            nextShape();
 
 
         }
@@ -44,20 +44,19 @@ public class Gameplay {
 
     public void nextShape() {
         log.debug("Start");
-        currentX = 0;
+        currentX = 3;
         currentY = 0;
         Shape[] shapeArr = new Shape[1];
-        shapeArr[0] = new Test();
-        /*shapeArr[0] = new J();
-        shapeArr[1] = new L();
-        shapeArr[2] = new S();
-        shapeArr[3] = new Z();
-        shapeArr[4] = new T();
-        shapeArr[5] = new Stick();
-        shapeArr[6] = new Square();
+        //shapeArr[0] = new J();
+        //shapeArr[1] = new L();
+        //shapeArr[2] = new S();
+        //shapeArr[3] = new Z();
+        shapeArr[0] = new T();
+        //shapeArr[3] = new Stick();
+        //shapeArr[4] = new Square();
         int n = random.nextInt(shapeArr.length);
-        field.putShape(shapeArr[n], currentX, currentY);*/
-        currentShape = shapeArr[0];
+        field.putShape(shapeArr[n], currentX, currentY);
+        currentShape = shapeArr[n];
         log.debug("Finish");
     }
 

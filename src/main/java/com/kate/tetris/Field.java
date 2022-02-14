@@ -149,21 +149,34 @@ public class Field {
 
     public void fall(){
         log.debug("Start");
+        boolean wasFall;
+        do {
+            wasFall=false;
+            int rowCellCount;
+            for (int y = getHeight() - 1; y > 0; y--) {
+                 rowCellCount = 0;
+                for (int x = 0; x < getWidth() - 1; x++) {
+                    if (arr[x][y].getValue() == 1) {
+                        rowCellCount++;
+                    }
+                }
+                wasFall=rowReplacement(rowCellCount, wasFall, y);
 
-        for(int y=getHeight();y>0;y--){
-            int rowCellCount=0;
-            for(int x=getWidth();x>0;x--){
-                if(arr[x][y].getValue()==1){
-                    rowCellCount++;
-                    // log.debug("rowCheck={}",rowCheck);
+            }
+        }while (wasFall);
+        log.debug("Finish");
+    }
+
+    public boolean rowReplacement(int rowCellCount, boolean wasFall, int numStr){
+        if (rowCellCount == getWidth() - 1) {
+            wasFall = true;
+            for (int y = numStr - 1; y > 0; y--) {
+                for (int x = 0; x < getWidth(); x++) {
+                    arr[x][y] = arr[x][y - 1];
                 }
             }
-            log.debug("rowCellCount={}",rowCellCount);
-            if(rowCellCount==getWidth()){
-                arr[x][y]=arr[x][y-1];
-            }
         }
-        log.debug("Finish");
+        return wasFall;
     }
 }
 

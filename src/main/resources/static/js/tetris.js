@@ -5,7 +5,7 @@ let x = 0;
 
 function start() {
     loadArray(false);
-    playInterval = setInterval(() => loadArray(true), 300)
+    playInterval = setInterval(() => loadArray(true), 600)
 }
 
 function stopPlay() {
