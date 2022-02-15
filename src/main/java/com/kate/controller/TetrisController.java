@@ -23,10 +23,10 @@ public class TetrisController {
     //Displays tetris field on the page
     @GetMapping(value = "/api/tetrisarr", produces = "application/json")
     @ResponseBody
-    public ArrayCell[][] getArr(@PathParam("move") boolean move) {
+    public ArrayCell[][] getArr(@PathParam("move") boolean move, @PathParam("down") boolean down) {
         ArrayCell[][] arr=gameplay.getField();
         if (move) {
-            gameplay.nextMove();
+            gameplay.nextMove(down);
         }
         return arr;
     }

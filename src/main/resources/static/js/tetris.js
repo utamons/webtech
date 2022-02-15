@@ -1,11 +1,11 @@
 // noinspection DuplicatedCode
 
 let playInterval;
-let x = 0;
 
 function start() {
-    loadArray(false);
-    playInterval = setInterval(() => loadArray(true), 600)
+    loadArray(true, true);
+    if (!playInterval)
+        playInterval = setInterval(() => loadArray(true, true), 600)
 }
 
 function stopPlay() {
@@ -13,23 +13,22 @@ function stopPlay() {
 }
 
 function load() {
-    loadArray(false);
+    loadArray(false,false);
 }
 
 function turnLeft(){
-    fetch('http://localhost:8080/api/turnleft').then()
-
+    fetch('http://localhost:8080/api/turnleft').then(()=>{loadArray(true, false)})
 }
 
 function turnRight(){
-    fetch('http://localhost:8080/api/turnright').then()
+    fetch('http://localhost:8080/api/turnright').then(()=>{loadArray(true, false)})
 }
 
 function moveLeft(){
-    fetch('http://localhost:8080/api/moveleft').then()
+    fetch('http://localhost:8080/api/moveleft').then(()=>{loadArray(true, false)})
 }
 function moveRight(){
-    fetch('http://localhost:8080/api/moveright').then()
+    fetch('http://localhost:8080/api/moveright').then(()=>{loadArray(true, false)})
 }
 
 function keyPress(event){
@@ -48,8 +47,8 @@ function keyPress(event){
     }
 }
 
-function loadArray(play) {
-    fetch('http://localhost:8080/api/tetrisarr?move=' + play)
+function loadArray(play,down) {
+    fetch('http://localhost:8080/api/tetrisarr?move=' + play + '&down=' + down)
         .then(response => response.json())
         .then(arr => {
             renderArray(arr)

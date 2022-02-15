@@ -24,11 +24,12 @@ public class Gameplay {
     }
 
     //Sends the shape down by one square
-    public void nextMove() {
+    public void nextMove(boolean down) {
         log.debug("Start, currentX={}, currentY={}, shape width={},height={}", currentX, currentY, currentShape.getWidth(), currentShape.getHeight());
         if ((currentY + currentShape.getHeight() <= field.getHeight()) && !field.isCollision(currentX, currentY, currentShape)) {
             field.putShape(currentShape, currentX, currentY);
-            currentY++;
+            if (down)
+                currentY++;
         } else {
             if (currentY == 0)
                 return; // the end of the game?
